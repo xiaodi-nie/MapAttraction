@@ -13,6 +13,7 @@
 		01FF1B0F2358FEB200C25E00 /* MapAttraction.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 01FF1B0D2358FEB200C25E00 /* MapAttraction.xcdatamodeld */; };
 		01FF1B112358FEB200C25E00 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01FF1B102358FEB200C25E00 /* Assets.xcassets */; };
 		01FF1B142358FEB200C25E00 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01FF1B122358FEB200C25E00 /* LaunchScreen.storyboard */; };
+		BEA513C3236B692200B9CB83 /* mainMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA513C2236B692200B9CB83 /* mainMapViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		01FF1B102358FEB200C25E00 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		01FF1B132358FEB200C25E00 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		01FF1B152358FEB300C25E00 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BEA513C2236B692200B9CB83 /* mainMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mainMapViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +61,7 @@
 				01FF1B062358FEB200C25E00 /* AppDelegate.swift */,
 				01FF1B082358FEB200C25E00 /* ViewController.swift */,
 				01FF1B0A2358FEB200C25E00 /* Main.storyboard */,
+				BEA513C2236B692200B9CB83 /* mainMapViewController.swift */,
 				01FF1B102358FEB200C25E00 /* Assets.xcassets */,
 				01FF1B122358FEB200C25E00 /* LaunchScreen.storyboard */,
 				01FF1B152358FEB300C25E00 /* Info.plist */,
@@ -138,6 +141,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BEA513C3236B692200B9CB83 /* mainMapViewController.swift in Sources */,
 				01FF1B0F2358FEB200C25E00 /* MapAttraction.xcdatamodeld in Sources */,
 				01FF1B092358FEB200C25E00 /* ViewController.swift in Sources */,
 				01FF1B072358FEB200C25E00 /* AppDelegate.swift in Sources */,
