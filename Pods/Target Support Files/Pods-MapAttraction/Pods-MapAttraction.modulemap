@@ -1,0 +1,6 @@
+framework module Pods_MapAttraction {
+  umbrella header "Pods-MapAttraction-umbrella.h"
+
+  export *
+  module * { export * }
+}

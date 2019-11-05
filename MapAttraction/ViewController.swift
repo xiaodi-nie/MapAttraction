@@ -7,15 +7,28 @@
 //
 
 import UIKit
+import Firebase
+
+
+
+
+
 
 class ViewController: UIViewController {
-
+    
+    
+   
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        getXid()
+        //getXid()
         // Do any additional setup after loading the view.
+
+   
+   
+        
     }
-    
+        
     func getXid (){
          let headers = [
              "x-rapidapi-host": "opentripmap-places-v1.p.rapidapi.com",

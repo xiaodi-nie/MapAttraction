@@ -9,15 +9,28 @@
 import UIKit
 import MapKit
 import CoreLocation
+import Firebase
 
 class UserPinViewController: UIViewController {
+    
+
     
     @IBOutlet weak var myMap: MKMapView!
     let locationManager = CLLocationManager()
     
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         pinLocation(a: 36.001678, b: -78.939767)
+        let ref = Database.database().reference(fromURL: "https://mapattraction.firebaseio.com/")
+        let name = "Frank"
+           let age = 23
+           let city = "aaa"
+           print("aaaadadasd")
+           
+           ref.child("sss").child(name).updateChildValues(["age": age, "city": city])
+        
         // Do any additional setup after loading the view.
         
     }
