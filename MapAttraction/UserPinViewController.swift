@@ -24,9 +24,9 @@ class UserPinViewController: UIViewController {
         super.viewDidLoad()
         pinLocation(a: 36.001678, b: -78.939767)
         let ref = Database.database().reference(fromURL: "https://mapattraction.firebaseio.com/")
-        let name = "Frank"
+        let name = "xiaodi"
            let age = 23
-           let city = "aaa"
+           let city = "durham"
            print("aaaadadasd")
            
            ref.child("sss").child(name).updateChildValues(["age": age, "city": city])

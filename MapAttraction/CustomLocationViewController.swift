@@ -18,6 +18,9 @@ class CustomLocationViewController: UIViewController, CLLocationManagerDelegate,
     let customPin = MKPointAnnotation()
     //var pinView: MKAnnotationView!
     
+    var lastLat = 0.0
+    var lastLong = 0.0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -43,28 +46,34 @@ class CustomLocationViewController: UIViewController, CLLocationManagerDelegate,
     /*
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    // In a storyboard-based application, you will often want to do a little preparation before navigation*/
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
+        if segue.destination is CustomLocInfoViewController
+        {
+            let vc = segue.destination as? CustomLocInfoViewController
+            vc?.latitude = self.lastLat
+            vc?.longitude = self.lastLong
+        }
     }
-    */
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         customMap.removeAnnotation(customPin)
         if let userLocation = locations.last{
-            let x = userLocation.coordinate.latitude
-            let y = userLocation.coordinate.longitude
-            print("latitude = \(x)")
-            print("longitude = \(y)")
+            self.lastLat = userLocation.coordinate.latitude
+            self.lastLong = userLocation.coordinate.longitude
+            print("latitude = \(lastLat)")
+            print("longitude = \(lastLong)")
             
-            let currCoords = CLLocationCoordinate2D(latitude: x, longitude: y)
+            let currCoords = CLLocationCoordinate2D(latitude: lastLat, longitude: lastLong)
             let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
             let region = MKCoordinateRegion(center: currCoords, span: span)
             customMap.setRegion(region, animated: true)
 
             
             customPin.coordinate = currCoords
-            customPin.title = "(\(x), \(y))"
+            customPin.title = String(format: "(%.8f, %.8f)", lastLat,lastLong)
             customMap.addAnnotation(customPin)
         }
         
@@ -97,7 +106,7 @@ class CustomLocationViewController: UIViewController, CLLocationManagerDelegate,
                 let newx = droppedAt.coordinate.latitude
                 let newy = droppedAt.coordinate.longitude
                 print("\(newx), \(newy)")
-                self.customPin.title = "(\(newx), \(newy))"
+                self.customPin.title = String(format: "(%.8f, %.8f)", newx,newy)
             }
             
         }

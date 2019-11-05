@@ -18,6 +18,7 @@
 		8D1C03132F38DD9D33BFDC15 /* Pods_MapAttraction.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC191395D00B2FB342FD842F /* Pods_MapAttraction.framework */; };
 		BE33BFAD2370BADB00246AAB /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE33BFAC2370BADB00246AAB /* MapKit.framework */; };
 		BE33BFAF2370BB2D00246AAB /* CustomLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE33BFAE2370BB2D00246AAB /* CustomLocationViewController.swift */; };
+		BE33BFB1237219F100246AAB /* CustomLocInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE33BFB0237219F100246AAB /* CustomLocInfoViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -48,6 +49,7 @@
 		AE6DDC08EE8A152A1C98FD76 /* Pods-MapAttraction.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapAttraction.release.xcconfig"; path = "Target Support Files/Pods-MapAttraction/Pods-MapAttraction.release.xcconfig"; sourceTree = "<group>"; };
 		BE33BFAC2370BADB00246AAB /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		BE33BFAE2370BB2D00246AAB /* CustomLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLocationViewController.swift; sourceTree = "<group>"; };
+		BE33BFB0237219F100246AAB /* CustomLocInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLocInfoViewController.swift; sourceTree = "<group>"; };
 		CC191395D00B2FB342FD842F /* Pods_MapAttraction.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MapAttraction.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -89,6 +91,7 @@
 				01FF1B082358FEB200C25E00 /* ViewController.swift */,
 				01FF1B0A2358FEB200C25E00 /* Main.storyboard */,
 				21EF405D236E3702009BFDA9 /* UserPinViewController.swift */,
+				BE33BFB0237219F100246AAB /* CustomLocInfoViewController.swift */,
 				BE33BFAE2370BB2D00246AAB /* CustomLocationViewController.swift */,
 				01FF1B102358FEB200C25E00 /* Assets.xcassets */,
 				01FF1B122358FEB200C25E00 /* LaunchScreen.storyboard */,
@@ -234,6 +237,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE33BFB1237219F100246AAB /* CustomLocInfoViewController.swift in Sources */,
 				01FF1B0F2358FEB200C25E00 /* MapAttraction.xcdatamodeld in Sources */,
 				01FF1B092358FEB200C25E00 /* ViewController.swift in Sources */,
 				21EF405E236E3702009BFDA9 /* UserPinViewController.swift in Sources */,
