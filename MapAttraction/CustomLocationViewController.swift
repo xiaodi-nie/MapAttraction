@@ -65,7 +65,6 @@ class CustomLocationViewController: UIViewController, CLLocationManagerDelegate,
             
             customPin.coordinate = currCoords
             customPin.title = "(\(x), \(y))"
-            //annotation.subtitle = "WEST CAMPUS"
             customMap.addAnnotation(customPin)
         }
         
@@ -82,7 +81,6 @@ class CustomLocationViewController: UIViewController, CLLocationManagerDelegate,
         if annotation is MKPointAnnotation {
             let pinAnnotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "myPin")
 
-            //pinAnnotationView.pinTintColor = .purple
             pinAnnotationView.isDraggable = true
             pinAnnotationView.canShowCallout = true
             pinAnnotationView.animatesDrop = true
@@ -108,56 +106,4 @@ class CustomLocationViewController: UIViewController, CLLocationManagerDelegate,
     
 }
 
-//extension CustomLocationViewController : MKMapViewDelegate{
-//    //MARK: - MapKit
-//    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-//
-//        if annotation.isMember(of: MKUserLocation.self) {
-//            return nil
-//        }
-//
-//        let reuseId = "ProfilePinView"
-//
-//        pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId)
-//        if pinView == nil {
-//            pinView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
-//        }
-//
-//        //
-//        pinView.canShowCallout = true
-//        pinView.isDraggable = true
-//
-//        //pinView.image = UIImage(named: "pin")
-//
-//
-//        return pinView
-//
-//    }
-//
-//
-//    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, didChange newState: MKAnnotationView.DragState, fromOldState oldState: MKAnnotationView.DragState) {
-//
-//
-//        if newState == MKAnnotationView.DragState.ending {
-//            if let coordinate = view.annotation?.coordinate {
-//
-//                //  let coordinate = view.annotation?.coordinate
-//                print(coordinate.latitude)
-//                //allmapView.removeAnnotations(allmapView.annotations)
-//
-//                //  self.longlocation = "\(coordinate.longitude)"
-//                //  self.latilocation = "\(coordinate.latitude)"
-//                view.dragState = MKAnnotationView.DragState.none
-//
-//            }
-//        }
-//    }
-//
-//
-//
-//
-//
-//}
-//
-//
-//
+
