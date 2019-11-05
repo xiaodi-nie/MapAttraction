@@ -30,8 +30,8 @@ class UserPinViewController: UIViewController {
         
         let annotation = MKPointAnnotation()
         annotation.coordinate = chapelCoords
-//        annotation.title = "Your Place"
-//        annotation.subtitle = "Pin your place"
+        annotation.title = "Your Place"
+        annotation.subtitle = "Pin your place"
         myMap.addAnnotation(annotation)
     }
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations:[CLLocation]){
