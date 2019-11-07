@@ -29,7 +29,7 @@ class UserPinViewController: UIViewController {
            let city = "durham"
            print("aaaadadasd")
            
-           ref.child("sss").child(name).updateChildValues(["age": age, "city": city])
+           //ref.child("sss").child(name).updateChildValues(["age": age, "city": city])
         
         // Do any additional setup after loading the view.
         

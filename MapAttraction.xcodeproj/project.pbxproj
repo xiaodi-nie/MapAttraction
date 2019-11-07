@@ -19,6 +19,8 @@
 		BE33BFAD2370BADB00246AAB /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE33BFAC2370BADB00246AAB /* MapKit.framework */; };
 		BE33BFAF2370BB2D00246AAB /* CustomLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE33BFAE2370BB2D00246AAB /* CustomLocationViewController.swift */; };
 		BE33BFB1237219F100246AAB /* CustomLocInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE33BFB0237219F100246AAB /* CustomLocInfoViewController.swift */; };
+		BEC1BBFA2373A04500597592 /* myTagTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC1BBF92373A04500597592 /* myTagTableViewCell.swift */; };
+		BEC1BBFC2373BB8400597592 /* SubmitCustomLocViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC1BBFB2373BB8400597592 /* SubmitCustomLocViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -50,6 +52,8 @@
 		BE33BFAC2370BADB00246AAB /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		BE33BFAE2370BB2D00246AAB /* CustomLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLocationViewController.swift; sourceTree = "<group>"; };
 		BE33BFB0237219F100246AAB /* CustomLocInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLocInfoViewController.swift; sourceTree = "<group>"; };
+		BEC1BBF92373A04500597592 /* myTagTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = myTagTableViewCell.swift; sourceTree = "<group>"; };
+		BEC1BBFB2373BB8400597592 /* SubmitCustomLocViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitCustomLocViewController.swift; sourceTree = "<group>"; };
 		CC191395D00B2FB342FD842F /* Pods_MapAttraction.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MapAttraction.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -90,6 +94,8 @@
 				01FF1B062358FEB200C25E00 /* AppDelegate.swift */,
 				01FF1B082358FEB200C25E00 /* ViewController.swift */,
 				01FF1B0A2358FEB200C25E00 /* Main.storyboard */,
+				BEC1BBFB2373BB8400597592 /* SubmitCustomLocViewController.swift */,
+				BEC1BBF92373A04500597592 /* myTagTableViewCell.swift */,
 				21EF405D236E3702009BFDA9 /* UserPinViewController.swift */,
 				BE33BFB0237219F100246AAB /* CustomLocInfoViewController.swift */,
 				BE33BFAE2370BB2D00246AAB /* CustomLocationViewController.swift */,
@@ -239,8 +245,10 @@
 			files = (
 				BE33BFB1237219F100246AAB /* CustomLocInfoViewController.swift in Sources */,
 				01FF1B0F2358FEB200C25E00 /* MapAttraction.xcdatamodeld in Sources */,
+				BEC1BBFC2373BB8400597592 /* SubmitCustomLocViewController.swift in Sources */,
 				01FF1B092358FEB200C25E00 /* ViewController.swift in Sources */,
 				21EF405E236E3702009BFDA9 /* UserPinViewController.swift in Sources */,
+				BEC1BBFA2373A04500597592 /* myTagTableViewCell.swift in Sources */,
 				01FF1B072358FEB200C25E00 /* AppDelegate.swift in Sources */,
 				BE33BFAF2370BB2D00246AAB /* CustomLocationViewController.swift in Sources */,
 			);

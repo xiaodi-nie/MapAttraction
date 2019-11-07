@@ -43,28 +43,15 @@ class CustomLocationViewController: UIViewController, CLLocationManagerDelegate,
       }
     }
 
-    /*
-    // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation*/
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-        if segue.destination is CustomLocInfoViewController
-        {
-            let vc = segue.destination as? CustomLocInfoViewController
-            vc?.latitude = self.lastLat
-            vc?.longitude = self.lastLong
-        }
-    }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         customMap.removeAnnotation(customPin)
         if let userLocation = locations.last{
             self.lastLat = userLocation.coordinate.latitude
             self.lastLong = userLocation.coordinate.longitude
-            print("latitude = \(lastLat)")
-            print("longitude = \(lastLong)")
+            //print("latitude = \(lastLat)")
+            //print("longitude = \(lastLong)")
             
             let currCoords = CLLocationCoordinate2D(latitude: lastLat, longitude: lastLong)
             let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
@@ -109,6 +96,21 @@ class CustomLocationViewController: UIViewController, CLLocationManagerDelegate,
                 self.customPin.title = String(format: "(%.8f, %.8f)", newx,newy)
             }
             
+        }
+    }
+    
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation*/
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
+        if segue.destination is CustomLocInfoViewController
+        {
+            let vc = segue.destination as? CustomLocInfoViewController
+            vc?.latitude = self.lastLat
+            vc?.longitude = self.lastLong
         }
     }
     
