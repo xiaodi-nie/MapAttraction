@@ -19,7 +19,6 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="UQJ-zc-8EC">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             </mapView>
-<<<<<<< HEAD
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Poke House" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Qm-SV-kxA">
                                 <rect key="frame" x="266" y="483" width="70" height="15"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -39,10 +38,7 @@
                                     <segue destination="5L0-Di-lnS" kind="showDetail" id="weB-H2-Mo2"/>
                                 </connections>
                             </button>
-                            <searchBar alpha="0.94999999999999996" contentMode="redraw" fixedFrame="YES" text="" placeholder="search for places" translatesAutoresizingMaskIntoConstraints="NO" id="nre-wg-suT">
-=======
                             <searchBar alpha="0.94999999999999996" contentMode="redraw" fixedFrame="YES" placeholder="search for places" translatesAutoresizingMaskIntoConstraints="NO" id="nre-wg-suT">
->>>>>>> 4b00abd0957fccdfaa4d36e11a0df40309323763
                                 <rect key="frame" x="20" y="62" width="374" height="56"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.41793268919999998" green="0.7198851705" blue="0.21939796210000001" alpha="0.62082619859999999" colorSpace="custom" customColorSpace="sRGB"/>
@@ -305,13 +301,13 @@
             <objects>
                 <viewController id="5L0-Di-lnS" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="aNN-HJ-4qt">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="1200"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="1146"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FpN-lQ-6Pz">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FpN-lQ-6Pz">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="1112"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="O0m-Z0-iIz" userLabel="Content View">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O0m-Z0-iIz" userLabel="Content View">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="1112"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="poke house" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="411-fD-FR0">
@@ -376,7 +372,7 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" scrollEnabled="NO" editable="NO" textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="Bzd-Lc-ip2">
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="Bzd-Lc-ip2">
                                                 <rect key="frame" x="22" y="550" width="369" height="311.5"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
@@ -596,6 +592,7 @@ Poke House allows you to customize your bowl any way you want. We serve deliciou
         <image name="add button" width="256" height="256"/>
         <image name="congrats" width="256" height="256"/>
         <image name="filter button" width="443" height="126"/>
+        <image name="mappin" width="16" height="16"/>
         <image name="new pin icon" width="256" height="256"/>
         <image name="poke house" width="960" height="540"/>
         <image name="round square button" width="684.5" height="126"/>

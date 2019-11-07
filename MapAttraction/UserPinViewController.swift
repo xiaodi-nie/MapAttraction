@@ -24,6 +24,10 @@ class UserPinViewController: UIViewController,UISearchBarDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         pinLocation(a: 36.001678, b: -78.939767)
+        
+        let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
 
         searchBar.showsScopeBar = true
         searchBar.delegate = self

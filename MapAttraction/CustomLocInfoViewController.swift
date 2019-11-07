@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class CustomLocInfoViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -76,6 +77,10 @@ class CustomLocInfoViewController: UIViewController, UITableViewDataSource, UITa
         print("prepare")
     }
     
+    
+    func saveToDB (name: String, tag: [String], x: Double, y: Double, description: String){
+        
+    }
     //todo
     //check if data is valid to be added to the database, i.e coordinates can't repeat, same entry can't be entered twice
     func submitToDb()->Bool{
@@ -85,6 +90,9 @@ class CustomLocInfoViewController: UIViewController, UITableViewDataSource, UITa
         print("tags: \(selectedTags)")
         print("name: \(String(describing: nameTextField.text))")
         print("description: \(String(describing: descriptionTextField.text))")
+        
+        let ref = Database.database().reference(fromURL: "https://mapattraction.firebaseio.com/")
+        ref.child("locations").child(nameTextField.text!).updateChildValues(["tag": selectedTags, "x": latitude,"y": longitude, "description": descriptionTextField.text!])
         return true
     }
     
