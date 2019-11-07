@@ -11,7 +11,7 @@ import MapKit
 import CoreLocation
 import Firebase
 
-class UserPinViewController: UIViewController {
+class UserPinViewController: UIViewController,UISearchBarDelegate {
     
 
     
@@ -19,21 +19,51 @@ class UserPinViewController: UIViewController {
     let locationManager = CLLocationManager()
     
 
+    @IBOutlet weak var searchBar: UISearchBar!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         pinLocation(a: 36.001678, b: -78.939767)
-        let ref = Database.database().reference(fromURL: "https://mapattraction.firebaseio.com/")
-        let name = "Frank"
-           let age = 23
-           let city = "aaa"
-           print("aaaadadasd")
-           
-           ref.child("sss").child(name).updateChildValues(["age": age, "city": city])
-        
+        searchBar.showsScopeBar = true
+        searchBar.delegate = self
+        saveToDB(name: "Jamba juice", tag: ["Restaurant", "water bar"], x: 111, y: 222, description: "Juicy juice")
         // Do any additional setup after loading the view.
-        
     }
+    
+
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        getData(name: searchBar.text! )
+       // print("searchText \(searchBar.text)")
+    }
+
+    
+    
+    
+    
+    func saveToDB (name: String, tag: [String], x: Double, y: Double, description: String){
+        let ref = Database.database().reference(fromURL: "https://mapattraction.firebaseio.com/")
+        ref.child("locations").child(name).updateChildValues(["tag": tag, "x": x,"y": y, "description": description])
+    }
+    
+    func getData(name :String){
+         let ref = Database.database().reference(fromURL: "https://mapattraction.firebaseio.com/")
+    ref.child("locations").child(name).observeSingleEvent(of: .value, with: { (snapshot) in
+    
+        for child in snapshot.children{
+            let snap = child as! DataSnapshot
+            let key = snap.key
+            let value = snap.value!
+            if (key == "tag"){
+                print(value);
+            }
+//            print(key," : ",value)
+        }
+
+    }) { (error) in
+      print(error.localizedDescription)
+    }
+    }
+    
     func pinLocation(a: Double , b: Double){
         let chapelCoords = CLLocationCoordinate2DMake(a, b)
         

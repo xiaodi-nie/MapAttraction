@@ -38,7 +38,7 @@
                                     <segue destination="5L0-Di-lnS" kind="showDetail" id="weB-H2-Mo2"/>
                                 </connections>
                             </button>
-                            <searchBar alpha="0.94999999999999996" contentMode="redraw" fixedFrame="YES" placeholder="search for places" translatesAutoresizingMaskIntoConstraints="NO" id="nre-wg-suT">
+                            <searchBar alpha="0.94999999999999996" contentMode="redraw" fixedFrame="YES" text="" placeholder="search for places" translatesAutoresizingMaskIntoConstraints="NO" id="nre-wg-suT">
                                 <rect key="frame" x="20" y="62" width="374" height="56"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.41793268919999998" green="0.7198851705" blue="0.21939796210000001" alpha="0.62082619859999999" colorSpace="custom" customColorSpace="sRGB"/>
@@ -86,6 +86,7 @@
                     <navigationItem key="navigationItem" id="OgO-sr-80x"/>
                     <connections>
                         <outlet property="myMap" destination="UQJ-zc-8EC" id="Jlb-nG-4cs"/>
+                        <outlet property="searchBar" destination="nre-wg-suT" id="Qb4-ew-yiU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

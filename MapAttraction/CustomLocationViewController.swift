@@ -9,6 +9,7 @@
 import UIKit
 import MapKit
 import CoreLocation
+import Firebase
 
 class CustomLocationViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
 
@@ -20,6 +21,10 @@ class CustomLocationViewController: UIViewController, CLLocationManagerDelegate,
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+      
+        
         
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
@@ -33,6 +38,8 @@ class CustomLocationViewController: UIViewController, CLLocationManagerDelegate,
         customMap.delegate = self
         
     }
+    
+//    func saveToDB(name: String, tag: String, x: double, y: double, description:   ){    }
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
       if(status == .authorizedWhenInUse || status == .authorizedAlways){
