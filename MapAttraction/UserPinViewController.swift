@@ -31,7 +31,7 @@ class UserPinViewController: UIViewController,UISearchBarDelegate {
 
         searchBar.showsScopeBar = true
         searchBar.delegate = self
-        saveToDB(name: "Jamba juice", tag: ["Restaurant", "water bar"], x: 111, y: 222, description: "Juicy juice")
+        saveToDB(name: "Jamba juice", tag: ["Restaurant", "water bar"], x: 111, y: 222, description: "Juicy juice", rating: 3)
 
         let ref = Database.database().reference(fromURL: "https://mapattraction.firebaseio.com/")
         let name = "xiaodi"
@@ -54,9 +54,9 @@ class UserPinViewController: UIViewController,UISearchBarDelegate {
     
     
     
-    func saveToDB (name: String, tag: [String], x: Double, y: Double, description: String){
+    func saveToDB (name: String, tag: [String], x: Double, y: Double, description: String, rating: Int){
         let ref = Database.database().reference(fromURL: "https://mapattraction.firebaseio.com/")
-        ref.child("locations").child(name).updateChildValues(["tag": tag, "x": x,"y": y, "description": description])
+        ref.child("locations").child(name).updateChildValues(["tag": tag, "x": x,"y": y, "description": description,"rating": rating])
     }
     
     func getData(name :String){
@@ -72,7 +72,6 @@ class UserPinViewController: UIViewController,UISearchBarDelegate {
             }
 //            print(key," : ",value)
         }
-
     }) { (error) in
       print(error.localizedDescription)
     }
