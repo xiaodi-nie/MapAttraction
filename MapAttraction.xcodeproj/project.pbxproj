@@ -21,6 +21,11 @@
 		BE33BFB1237219F100246AAB /* CustomLocInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE33BFB0237219F100246AAB /* CustomLocInfoViewController.swift */; };
 		BE634EE62374FC6E00989E9E /* myRatingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE634EE52374FC6E00989E9E /* myRatingTableViewCell.swift */; };
 		BE634EE823750E2900989E9E /* UIResponderExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE634EE723750E2900989E9E /* UIResponderExtensions.swift */; };
+		BE634EEA237617C200989E9E /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE634EE9237617C200989E9E /* FilterViewController.swift */; };
+		BE634EEC23761CAE00989E9E /* tagFilterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE634EEB23761CAE00989E9E /* tagFilterTableViewCell.swift */; };
+		BE634EEE23761D1200989E9E /* distanceFilterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE634EED23761D1200989E9E /* distanceFilterTableViewCell.swift */; };
+		BE634EF023761D8400989E9E /* ratingFilterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE634EEF23761D8400989E9E /* ratingFilterTableViewCell.swift */; };
+		BE634EF2237664B700989E9E /* ArrayExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE634EF1237664B700989E9E /* ArrayExtensions.swift */; };
 		BEC1BBFA2373A04500597592 /* myTagTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC1BBF92373A04500597592 /* myTagTableViewCell.swift */; };
 		BEC1BBFC2373BB8400597592 /* SubmitCustomLocViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC1BBFB2373BB8400597592 /* SubmitCustomLocViewController.swift */; };
 /* End PBXBuildFile section */
@@ -56,6 +61,11 @@
 		BE33BFB0237219F100246AAB /* CustomLocInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLocInfoViewController.swift; sourceTree = "<group>"; };
 		BE634EE52374FC6E00989E9E /* myRatingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = myRatingTableViewCell.swift; sourceTree = "<group>"; };
 		BE634EE723750E2900989E9E /* UIResponderExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIResponderExtensions.swift; sourceTree = "<group>"; };
+		BE634EE9237617C200989E9E /* FilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
+		BE634EEB23761CAE00989E9E /* tagFilterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tagFilterTableViewCell.swift; sourceTree = "<group>"; };
+		BE634EED23761D1200989E9E /* distanceFilterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = distanceFilterTableViewCell.swift; sourceTree = "<group>"; };
+		BE634EEF23761D8400989E9E /* ratingFilterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ratingFilterTableViewCell.swift; sourceTree = "<group>"; };
+		BE634EF1237664B700989E9E /* ArrayExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtensions.swift; sourceTree = "<group>"; };
 		BEC1BBF92373A04500597592 /* myTagTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = myTagTableViewCell.swift; sourceTree = "<group>"; };
 		BEC1BBFB2373BB8400597592 /* SubmitCustomLocViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitCustomLocViewController.swift; sourceTree = "<group>"; };
 		CC191395D00B2FB342FD842F /* Pods_MapAttraction.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MapAttraction.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -97,14 +107,19 @@
 			children = (
 				01FF1B062358FEB200C25E00 /* AppDelegate.swift */,
 				01FF1B082358FEB200C25E00 /* ViewController.swift */,
+				21EF405D236E3702009BFDA9 /* UserPinViewController.swift */,
 				01FF1B0A2358FEB200C25E00 /* Main.storyboard */,
+				BE634EF1237664B700989E9E /* ArrayExtensions.swift */,
+				BE634EE9237617C200989E9E /* FilterViewController.swift */,
+				BE33BFB0237219F100246AAB /* CustomLocInfoViewController.swift */,
+				BE33BFAE2370BB2D00246AAB /* CustomLocationViewController.swift */,
+				BE634EEB23761CAE00989E9E /* tagFilterTableViewCell.swift */,
+				BE634EED23761D1200989E9E /* distanceFilterTableViewCell.swift */,
+				BE634EEF23761D8400989E9E /* ratingFilterTableViewCell.swift */,
 				BE634EE723750E2900989E9E /* UIResponderExtensions.swift */,
 				BE634EE52374FC6E00989E9E /* myRatingTableViewCell.swift */,
 				BEC1BBFB2373BB8400597592 /* SubmitCustomLocViewController.swift */,
 				BEC1BBF92373A04500597592 /* myTagTableViewCell.swift */,
-				21EF405D236E3702009BFDA9 /* UserPinViewController.swift */,
-				BE33BFB0237219F100246AAB /* CustomLocInfoViewController.swift */,
-				BE33BFAE2370BB2D00246AAB /* CustomLocationViewController.swift */,
 				01FF1B102358FEB200C25E00 /* Assets.xcassets */,
 				01FF1B122358FEB200C25E00 /* LaunchScreen.storyboard */,
 				01FF1B152358FEB300C25E00 /* Info.plist */,
@@ -250,12 +265,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE33BFB1237219F100246AAB /* CustomLocInfoViewController.swift in Sources */,
+				BE634EF2237664B700989E9E /* ArrayExtensions.swift in Sources */,
 				01FF1B0F2358FEB200C25E00 /* MapAttraction.xcdatamodeld in Sources */,
 				BE634EE62374FC6E00989E9E /* myRatingTableViewCell.swift in Sources */,
 				BEC1BBFC2373BB8400597592 /* SubmitCustomLocViewController.swift in Sources */,
 				BE634EE823750E2900989E9E /* UIResponderExtensions.swift in Sources */,
+				BE634EEA237617C200989E9E /* FilterViewController.swift in Sources */,
 				01FF1B092358FEB200C25E00 /* ViewController.swift in Sources */,
 				21EF405E236E3702009BFDA9 /* UserPinViewController.swift in Sources */,
+				BE634EEC23761CAE00989E9E /* tagFilterTableViewCell.swift in Sources */,
+				BE634EEE23761D1200989E9E /* distanceFilterTableViewCell.swift in Sources */,
+				BE634EF023761D8400989E9E /* ratingFilterTableViewCell.swift in Sources */,
 				BEC1BBFA2373A04500597592 /* myTagTableViewCell.swift in Sources */,
 				01FF1B072358FEB200C25E00 /* AppDelegate.swift in Sources */,
 				BE33BFAF2370BB2D00246AAB /* CustomLocationViewController.swift in Sources */,

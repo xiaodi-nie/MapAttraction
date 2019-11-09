@@ -13,13 +13,31 @@ import Firebase
 
 class UserPinViewController: UIViewController,UISearchBarDelegate {
     
-
+    var coordinates:[(Double,Double)] = []
+    var passedFilterTags:[String] = []
+    var passedFilterDistance:Int = 0
+    var passedFilterRating:Int = 1
     
     @IBOutlet weak var myMap: MKMapView!
     let locationManager = CLLocationManager()
     
 
     @IBOutlet weak var searchBar: UISearchBar!
+    
+    @IBAction func cancel(_ unwindSegue: UIStoryboardSegue) {
+        // Use data from the view controller which initiated the unwind segue
+    }
+    
+    @IBAction func unwindFromFilterVC(_ sender: UIStoryboardSegue){
+        if sender.source is FilterViewController{
+            if let senderVC = sender.source as? FilterViewController{
+                passedFilterTags = senderVC.filterTags
+                passedFilterDistance = senderVC.filterDistance
+                passedFilterRating = senderVC.filterRating
+                print("\(passedFilterTags) \(passedFilterDistance) \(passedFilterRating)")
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,14 +51,6 @@ class UserPinViewController: UIViewController,UISearchBarDelegate {
         searchBar.delegate = self
         saveToDB(name: "Jamba juice", tag: ["Restaurant", "water bar"], x: 111, y: 222, description: "Juicy juice", rating: 3)
 
-        let ref = Database.database().reference(fromURL: "https://mapattraction.firebaseio.com/")
-        let name = "xiaodi"
-           let age = 23
-           let city = "durham"
-           print("aaaadadasd")
-           
-           //ref.child("sss").child(name).updateChildValues(["age": age, "city": city])
-        
         // Do any additional setup after loading the view.
     }
     

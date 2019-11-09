@@ -118,8 +118,8 @@ class CustomLocInfoViewController: UIViewController, UITableViewDataSource, UITa
     
     //this one is called after the shouldPerformSegue function and it's only called
     //when shouldPerformSegue returns true
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
-    {
+    //override func prepare(for segue: UIStoryboardSegue, sender: Any?)
+    //{
 //        if segue.destination is CustomLocInfoViewController
 //        {
 //            let vc = segue.destination as? SubmitCustomLocViewController
@@ -127,8 +127,8 @@ class CustomLocInfoViewController: UIViewController, UITableViewDataSource, UITa
 //            vc?.name = nameTextField.text
 //            vc?.longitude = name
 //        }
-        print("prepare")
-    }
+        //print("prepare")
+    //}
     
     
     func saveToDB (name: String, tag: [String], x: Double, y: Double, description: String){
