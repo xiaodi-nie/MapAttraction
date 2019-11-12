@@ -25,10 +25,6 @@ class CustomLocationViewController: UIViewController, CLLocationManagerDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-      
-        
-        
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
         // after showing the permission dialog, the program will continue executing the next line before the user has tap 'Allow' or 'Disallow'
