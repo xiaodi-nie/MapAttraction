@@ -17,6 +17,7 @@
 		21EF405E236E3702009BFDA9 /* UserPinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21EF405D236E3702009BFDA9 /* UserPinViewController.swift */; };
 		8D1C03132F38DD9D33BFDC15 /* Pods_MapAttraction.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC191395D00B2FB342FD842F /* Pods_MapAttraction.framework */; };
 		BE31996A237A5300000D7758 /* PinDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE319969237A52FF000D7758 /* PinDetailViewController.swift */; };
+		BE31996C237B5386000D7758 /* PinAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE31996B237B5386000D7758 /* PinAnnotation.swift */; };
 		BE33BFAD2370BADB00246AAB /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE33BFAC2370BADB00246AAB /* MapKit.framework */; };
 		BE33BFAF2370BB2D00246AAB /* CustomLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE33BFAE2370BB2D00246AAB /* CustomLocationViewController.swift */; };
 		BE33BFB1237219F100246AAB /* CustomLocInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE33BFB0237219F100246AAB /* CustomLocInfoViewController.swift */; };
@@ -58,6 +59,7 @@
 		A35BA96773E155CBEBCF89EF /* Pods-MapAttraction.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapAttraction.debug.xcconfig"; path = "Target Support Files/Pods-MapAttraction/Pods-MapAttraction.debug.xcconfig"; sourceTree = "<group>"; };
 		AE6DDC08EE8A152A1C98FD76 /* Pods-MapAttraction.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapAttraction.release.xcconfig"; path = "Target Support Files/Pods-MapAttraction/Pods-MapAttraction.release.xcconfig"; sourceTree = "<group>"; };
 		BE319969237A52FF000D7758 /* PinDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinDetailViewController.swift; sourceTree = "<group>"; };
+		BE31996B237B5386000D7758 /* PinAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinAnnotation.swift; sourceTree = "<group>"; };
 		BE33BFAC2370BADB00246AAB /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		BE33BFAE2370BB2D00246AAB /* CustomLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLocationViewController.swift; sourceTree = "<group>"; };
 		BE33BFB0237219F100246AAB /* CustomLocInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLocInfoViewController.swift; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 				01FF1B062358FEB200C25E00 /* AppDelegate.swift */,
 				01FF1B082358FEB200C25E00 /* ViewController.swift */,
 				21EF405D236E3702009BFDA9 /* UserPinViewController.swift */,
+				BE31996B237B5386000D7758 /* PinAnnotation.swift */,
 				BE319969237A52FF000D7758 /* PinDetailViewController.swift */,
 				01FF1B0A2358FEB200C25E00 /* Main.storyboard */,
 				BE634EF1237664B700989E9E /* ArrayExtensions.swift */,
@@ -278,6 +281,7 @@
 				01FF1B092358FEB200C25E00 /* ViewController.swift in Sources */,
 				21EF405E236E3702009BFDA9 /* UserPinViewController.swift in Sources */,
 				BE634EEC23761CAE00989E9E /* tagFilterTableViewCell.swift in Sources */,
+				BE31996C237B5386000D7758 /* PinAnnotation.swift in Sources */,
 				BE634EEE23761D1200989E9E /* distanceFilterTableViewCell.swift in Sources */,
 				BE634EF023761D8400989E9E /* ratingFilterTableViewCell.swift in Sources */,
 				BEC1BBFA2373A04500597592 /* myTagTableViewCell.swift in Sources */,

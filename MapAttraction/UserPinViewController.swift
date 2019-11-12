@@ -21,8 +21,8 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
     var passedFilterRating:Int = 1
     
     let annotationLocations = [
-        ["title": "location 1", "latitude": 37.33627815, "longitude": -122.03096498],
-        ["title": "location 2", "latitude": 37.33198570, "longitude": -122.02952778]
+        ["title": "location 1", "latitude": 37.33627815, "longitude": -122.03096498, "xid":"xid111"],
+        ["title": "location 2", "latitude": 37.33198570, "longitude": -122.02952778, "xid":"xid222"]
     ]
     
     var lastLat:Double = 0
@@ -117,10 +117,7 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
         
         for location in locations{
             let coord = CLLocationCoordinate2DMake(location["latitude"] as! CLLocationDegrees, location["longitude"] as! CLLocationDegrees)
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = coord
-            annotation.title = location["title"] as? String
-            annotation.subtitle = "xid12345"
+            let annotation = PinAnnotation(title: location["title"] as! String, xid: location["xid"] as! String, coordinate: coord)
             myMap.addAnnotation(annotation)
         }
         
@@ -168,7 +165,7 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
         {
             let destVC = segue.destination as! PinDetailViewController
 
-            destVC.xid = (sender as! MKAnnotationView).annotation!.subtitle!!
+            destVC.xid = ((sender as! MKAnnotationView).annotation as! PinAnnotation).xid
 
         }
     }

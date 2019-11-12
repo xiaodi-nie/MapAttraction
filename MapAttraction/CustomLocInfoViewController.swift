@@ -153,7 +153,7 @@ class CustomLocInfoViewController: UIViewController, UITableViewDataSource, UITa
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
 
         if identifier == "submitSegue" {
-            if nameTextField.text!.isEmpty || descriptionTextField.text!.isEmpty || selectedTags.isEmpty {
+            if nameTextField.text!.isEmpty || descriptionTextField.text!.isEmpty || selectedTags.isEmpty || selectedRating == 0 {
                 let alertController = UIAlertController(
                     title: "Empty Fields",
                     message: "Name, Tags and Description can't be empty, please fill them in",
