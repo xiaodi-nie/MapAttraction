@@ -120,13 +120,19 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
             let annotation = MKPointAnnotation()
             annotation.coordinate = coord
             annotation.title = location["title"] as? String
-            //annotation.subtitle = "Pin your place"
+            annotation.subtitle = "xid12345"
             myMap.addAnnotation(annotation)
-            
         }
         
-        
-        
+    }
+    
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView)
+    {
+        if let annotationTitle = view.annotation?.title
+        {
+            print("User tapped on annotation with title: \(annotationTitle!)")
+            performSegue(withIdentifier: "toPinDetailSegue", sender: view)
+        }
         
     }
     
@@ -156,11 +162,16 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
     /*
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    // In a storyboard-based application, you will often want to do a little preparation before navigation*/
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        if (segue.identifier == "toPinDetailSegue" )
+        {
+            let destVC = segue.destination as! PinDetailViewController
+
+            destVC.xid = (sender as! MKAnnotationView).annotation!.subtitle!!
+
+        }
     }
-    */
+    
 
 }

@@ -73,6 +73,7 @@
                     <connections>
                         <outlet property="myMap" destination="UQJ-zc-8EC" id="Jlb-nG-4cs"/>
                         <outlet property="searchBar" destination="nre-wg-suT" id="Qb4-ew-yiU"/>
+                        <segue destination="5L0-Di-lnS" kind="showDetail" identifier="toPinDetailSegue" id="GhG-Yf-vBc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -349,22 +350,22 @@
             </objects>
             <point key="canvasLocation" x="3834.7826086956525" y="1009.8214285714286"/>
         </scene>
-        <!--View Controller-->
+        <!--Pin Detail View Controller-->
         <scene sceneID="wyB-dq-8OP">
             <objects>
-                <viewController id="5L0-Di-lnS" sceneMemberID="viewController">
+                <viewController id="5L0-Di-lnS" customClass="PinDetailViewController" customModule="MapAttraction" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="aNN-HJ-4qt">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="1200"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="1146"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FpN-lQ-6Pz">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FpN-lQ-6Pz">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="1112"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="O0m-Z0-iIz" userLabel="Content View">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O0m-Z0-iIz" userLabel="Content View">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="1112"/>
                                         <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="poke house" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="411-fD-FR0">
-                                                <rect key="frame" x="-273" y="0.0" width="960" height="319"/>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="poke house" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="411-fD-FR0">
+                                                <rect key="frame" x="0.0" y="0.0" width="414" height="319"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="319" id="pah-xV-512"/>
                                                 </constraints>
@@ -425,7 +426,7 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" scrollEnabled="NO" editable="NO" textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="Bzd-Lc-ip2">
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="Bzd-Lc-ip2">
                                                 <rect key="frame" x="22" y="550" width="369" height="311.5"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
@@ -440,7 +441,7 @@ Poke House allows you to customize your bowl any way you want. We serve deliciou
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstItem="411-fD-FR0" firstAttribute="top" secondItem="O0m-Z0-iIz" secondAttribute="top" id="40s-fJ-MkZ"/>
+                                            <constraint firstItem="411-fD-FR0" firstAttribute="top" secondItem="O0m-Z0-iIz" secondAttribute="top" id="AKM-Df-5z8"/>
                                             <constraint firstAttribute="bottom" secondItem="Bzd-Lc-ip2" secondAttribute="bottom" constant="250.5" id="GIq-EY-L4d"/>
                                             <constraint firstItem="Bzd-Lc-ip2" firstAttribute="top" secondItem="j56-lb-DcN" secondAttribute="bottom" constant="161" id="Jsa-VO-pWB"/>
                                             <constraint firstItem="Bzd-Lc-ip2" firstAttribute="leading" secondItem="O0m-Z0-iIz" secondAttribute="leading" constant="22" id="Rba-Uc-LQ6"/>
@@ -476,7 +477,7 @@ Poke House allows you to customize your bowl any way you want. We serve deliciou
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lED-6l-Xca" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1901" y="149"/>
+            <point key="canvasLocation" x="1900.0000000000002" y="148.66071428571428"/>
         </scene>
         <!--Filter View Controller-->
         <scene sceneID="xGy-nr-g5H">
