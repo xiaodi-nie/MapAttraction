@@ -25,15 +25,13 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
         ["title": "location 2", "latitude": 37.33198570, "longitude": -122.02952778, "xid":"xid222"]
     ]
     
+    //variables used to record current coordinates
     var lastLat:Double = 0
     var lastLong:Double = 0
-    
-    
     
     @IBOutlet weak var myMap: MKMapView!
     let locationManager = CLLocationManager()
     
-
     @IBOutlet weak var searchBar: UISearchBar!
     
     //destination of the unwind segue linked to the cancel button on the filterViewController
@@ -78,8 +76,6 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
         
         
         saveToDB(name: "Jamba juice", tag: ["Restaurant", "water bar"], x: 111, y: 222, description: "Juicy juice", rating: 3)
-
-        // Do any additional setup after loading the view.
     }
     
 
@@ -123,6 +119,7 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
         
     }
     
+    //called after an annotation is clicked on the map
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView)
     {
         if let annotationTitle = view.annotation?.title
@@ -133,7 +130,7 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
         
     }
     
-    
+    //called after user location is acquired/updated
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations:[CLLocation]){
         if let userLocation = locations.last{
             self.lastLat = userLocation.coordinate.latitude
@@ -156,15 +153,14 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
     }
     
 
-    /*
+    
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation*/
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "toPinDetailSegue" )
         {
             let destVC = segue.destination as! PinDetailViewController
-
             destVC.xid = ((sender as! MKAnnotationView).annotation as! PinAnnotation).xid
 
         }

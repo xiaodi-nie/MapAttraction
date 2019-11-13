@@ -14,11 +14,13 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
     @IBOutlet weak var distanceFilterTableView: UITableView!
     @IBOutlet weak var ratingFilterTableView: UITableView!
     
+    //data source of the tableViews on the view controller
     let tags:[String] = ["Interesting places", "Accomodations", "Adult", "Amusements", "Architecture","Cultual", "Historical", "Industrial facilities", "Natural", "Other", "Religion", "Sport", "Tourist facilities", "Foods", "Shops", "Transport"]
     let ratings:[String] = [">= 1 Star", ">= 2 Stars", ">= 3 Stars"]
     let distances: [String] = ["< 500m", "< 1km", "< 3km", "< 5km"]
     let distancesNum: [Int] = [500, 1000, 3000, 5000]
     
+    //variables used to record user selected tags, distance and rating
     var filterTags:[String] = []
     var filterDistance: Int = 0
     var filterRating: Int = 1
@@ -26,7 +28,6 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
     }
     
     
@@ -43,6 +44,7 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
         }
     }
     
+    //use different cell identifier to populate different tableViews
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if(tableView == self.tagFilterTableView){
             let myTagCell = tableView.dequeueReusableCell(withIdentifier: "tagFilterCell", for: indexPath) as! tagFilterTableViewCell
@@ -63,6 +65,7 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
         }
     }
     
+    //called every time user select any tableView, update different user selected values accordingly
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if(tableView == self.tagFilterTableView){
             //print("selected one row")
@@ -80,6 +83,7 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
         
     }
     
+    //called every time user deselect any tableView, remove entry from the selected tags array
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         
         print("deselect")

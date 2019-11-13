@@ -22,9 +22,11 @@ class CustomLocInfoViewController: UIViewController, UITableViewDataSource, UITa
     @IBOutlet weak var tagsTableView: UITableView!
     @IBOutlet weak var ratingTableView: UITableView!
     
+    //data source for tags and ratings tableView
     let tags:[String] = ["Interesting places", "Accomodations", "Adult", "Amusements", "Architecture","Cultual", "Historical", "Industrial facilities", "Natural", "Other", "Religion", "Sport", "Tourist facilities", "Foods", "Shops", "Transport"]
     let ratings:[String] = ["1 Star", "2 Stars", "3 Stars"]
     
+    //called every time user select a row in any tableView, update user selected data accordingly
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if(tableView == self.tagsTableView){
             print("selected one row")
@@ -39,6 +41,7 @@ class CustomLocInfoViewController: UIViewController, UITableViewDataSource, UITa
         
     }
     
+    //called every time user deselect a row in any tableView, remove entry from selected tags array
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         
         print("deselect")
@@ -58,6 +61,7 @@ class CustomLocInfoViewController: UIViewController, UITableViewDataSource, UITa
         }
     }
     
+    //use different identifier to populate different tableViews
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if(tableView == self.tagsTableView){
             let myCell = tableView.dequeueReusableCell(withIdentifier: "myTagCell", for: indexPath) as! myTagTableViewCell
@@ -80,15 +84,18 @@ class CustomLocInfoViewController: UIViewController, UITableViewDataSource, UITa
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //the following code snippet is used to enable touching on screen to dismiss keyboard
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing))
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
         
+        //the following code snippet is used to register keyboardWillShow and keyboardWillHide notification to move the view up or down, it can prevent keyboard from blocking the text field on the view
         NotificationCenter.default.addObserver(self, selector: #selector(CustomLocInfoViewController.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(CustomLocInfoViewController.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         // Do any additional setup after loading the view.
     }
     
+    //move view up the height of the keyboard when descriptionTextField is the first responder
     @objc func keyboardWillShow(notification: NSNotification) {
         let textField = UIResponder.firstResponder as? UITextField
         if(textField == self.descriptionTextField){
@@ -101,7 +108,7 @@ class CustomLocInfoViewController: UIViewController, UITableViewDataSource, UITa
         }
     }
     
-    
+    //move view back down the height of the keyboard when descriptionTextField is the first responder
     @objc func keyboardWillHide(notification: NSNotification) {
         let textField = UIResponder.firstResponder as? UITextField
         if(textField == self.descriptionTextField){
@@ -150,6 +157,7 @@ class CustomLocInfoViewController: UIViewController, UITableViewDataSource, UITa
         return true
     }
     
+    //check if the user input is valid before performing the segue
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
 
         if identifier == "submitSegue" {

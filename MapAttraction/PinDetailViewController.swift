@@ -10,6 +10,7 @@ import UIKit
 
 class PinDetailViewController: UIViewController {
 
+    //passed from UserPinViewController
     var xid:String = ""
     
     override func viewDidLoad() {

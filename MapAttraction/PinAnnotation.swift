@@ -11,6 +11,7 @@ import MapKit
 class PinAnnotation: NSObject, MKAnnotation {
     
     let title: String?
+    //xid as the unique id to retrieve detailed information of each location thru api
     let xid: String
     let coordinate: CLLocationCoordinate2D
       

@@ -17,7 +17,6 @@ class CustomLocationViewController: UIViewController, CLLocationManagerDelegate,
     
     let locationManager = CLLocationManager()
     let customPin = MKPointAnnotation()
-    //var pinView: MKAnnotationView!
     
     var lastLat = 0.0
     var lastLong = 0.0
@@ -47,7 +46,7 @@ class CustomLocationViewController: UIViewController, CLLocationManagerDelegate,
     }
 
 
-    
+    //called when user's location is requested/updated
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         customMap.removeAnnotation(customPin)
         if let userLocation = locations.last{
@@ -76,6 +75,7 @@ class CustomLocationViewController: UIViewController, CLLocationManagerDelegate,
         // might be a good idea to show an alert to user to ask them to walk to a place with GPS signal
     }
     
+    //used to configure the look of the annotation, here callout and draggable are enabled
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if annotation is MKPointAnnotation {
             let pinAnnotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "myPin")
@@ -90,6 +90,7 @@ class CustomLocationViewController: UIViewController, CLLocationManagerDelegate,
         return nil
     }
     
+    //called every time the annotation pin is dragged(state is changed)
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, didChange newState: MKAnnotationView.DragState, fromOldState oldState: MKAnnotationView.DragState) {
         if newState == MKAnnotationView.DragState.ending {
             if let droppedAt = view.annotation{
