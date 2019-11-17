@@ -49,6 +49,19 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
                 print("\(passedFilterTags) \(passedFilterDistance) \(passedFilterRating)")
                 // call api with filter
                 // pin the result from the api
+                var requesturl = "https://opentripmap-places-v1.p.rapidapi.com/en/places/bbox?src_attr="
+                var i = 0
+                for tag in passedFilterTags{
+                    i += 1
+                    requesturl = requesturl + tag
+                    if(i < passedFilterTags.count){
+                        requesturl = requesturl + "%252C%20"
+                    }
+                    
+                }
+                requesturl += "&rate="+String(passedFilterRating)+"&limit="+String(passedFilterDistance)+"&lon_min=11&lon_max=1&lat_min=1&lat_max=1"
+                
+                
             }
         }
     }
