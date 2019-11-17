@@ -28,10 +28,10 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
     //variables used to record current coordinates
     var lastLat:Double = 0
     var lastLong:Double = 0
-    var maxla: Double = 0
-    var minla: Double = 0
-    var maxlong: Double = 0
-    var minlong: Double = 0
+    var maxla:Double = 0
+    var minla:Double = 0
+    var maxlong:Double = 0
+    var minlong:Double = 0
     
     @IBOutlet weak var myMap: MKMapView!
     let locationManager = CLLocationManager()
@@ -95,10 +95,7 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
         
         
         saveToDB(name: "Jamba juice", tag: ["Restaurant", "water bar"], x: 111, y: 222, description: "Juicy juice", rating: 3)
-        // get data with boarding boundary from api and parse the result into annotationLocations
-        let defaulturl = "https://opentripmap-places-v1.p.rapidapi.com/en/places/bbox?lon_min="+String(minlong)+"&lon_max="+String(maxlong)+"&lat_min="+String(minla)+"&lat_max="+String(maxla)
-        getFromAPI(urlrequest: defaulturl)
-        pinLocations(locations: annotationLocations)
+        
     }
     
 
@@ -135,6 +132,7 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
     func pinLocations(locations:[[String:Any]]){
         
         for location in locations{
+            
             let coord = CLLocationCoordinate2DMake(location["latitude"] as! CLLocationDegrees, location["longitude"] as! CLLocationDegrees)
             let annotation = PinAnnotation(title: location["title"] as! String, xid: location["xid"] as! String, coordinate: coord)
             myMap.addAnnotation(annotation)
@@ -155,6 +153,7 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
     
     //called after user location is acquired/updated
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations:[CLLocation]){
+        print("in location manager")
         if let userLocation = locations.last{
             self.lastLat = userLocation.coordinate.latitude
             self.lastLong = userLocation.coordinate.longitude
@@ -165,9 +164,18 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
             myMap.setRegion(region, animated: true)
             
             minla = region.center.latitude - (region.span.latitudeDelta / 2.0);
+            print(minla)
             maxla = region.center.latitude + (region.span.latitudeDelta / 2.0);
             minlong = region.center.longitude - (region.span.longitudeDelta / 2.0);
             maxlong = region.center.longitude + (region.span.longitudeDelta / 2.0);
+            
+            // get data with boarding boundary from api and parse the result into annotationLocations
+            let defaulturl = "https://opentripmap-places-v1.p.rapidapi.com/en/places/bbox?lon_min="+String(minlong)+"&lon_max="+String(maxlong)+"&lat_min="+String(minla)+"&lat_max="+String(maxla)
+            
+            
+            getFromAPI(urlrequest: defaulturl)
+            pinLocations(locations: annotationLocations)
+            
         
         }
         
@@ -198,7 +206,7 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
     
     func getFromAPI (urlrequest:String){
         // clear the annotationlocation list
-        annotationLocations.removeAll()
+        //annotationLocations.removeAll()
         let headers = [
             "x-rapidapi-host": "opentripmap-places-v1.p.rapidapi.com",
             "x-rapidapi-key": "8af0d82f43msh34e53305797a0cbp197d01jsnac77d9f76adc"
@@ -222,8 +230,10 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
                 do {
                     let json: NSDictionary = try JSONSerialization.jsonObject(with: data!, options: []) as! NSDictionary
                     let feature: NSArray = json["features"] as! NSArray
-                    // print(feature)
+                    
+                    //print(feature)
                     for item in feature{
+                        
                         let detail = item as! NSDictionary
                         let geometry = detail["geometry"] as! NSDictionary
                         let coordinates = geometry["coordinates"] as! NSArray
@@ -234,8 +244,13 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
                         let rate: Double = properties["rate"]! as! Double
                         let xid: String = properties["xid"]! as! String
                         print(name+"->", xid+"->", String(rate)+"->",String(long)+"->",String(lat))
-                        self.annotationLocations.append(contentsOf: [["title": name, "latitude": lat, "longitude": long, "xid":xid, "fromApi": true]])
+                        print(name)
+                        print(lat)
+                        print(long)
+                        self.annotationLocations.append(["title": name, "latitude": lat, "longitude": long, "xid":xid, "fromApi": true])
+                        
                     }
+                    print(self.annotationLocations)
                 } catch {
                     print("JSON error: \(error.localizedDescription)")
                 }
