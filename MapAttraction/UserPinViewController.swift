@@ -33,6 +33,8 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
     var maxlong:Double = 0
     var minlong:Double = 0
     
+    typealias FinishedDownload = () -> ()
+    
     @IBOutlet weak var myMap: MKMapView!
     let locationManager = CLLocationManager()
     
@@ -66,7 +68,7 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
                 requesturl += "&rate="+String(passedFilterRating)+"&limit="+String(passedFilterDistance)+"&lon_min="+String(minlong)+"&lon_max="+String(maxlong)+"&lat_min="+String(minla)+"&lat_max="+String(maxla)
                 print(requesturl)
                 getFromAPI(urlrequest: requesturl)
-                pinLocations(locations: annotationLocations)
+                //pinLocations(locations: annotationLocations)
                 
             }
         }
@@ -159,27 +161,29 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
             self.lastLong = userLocation.coordinate.longitude
         
             let currCoords = CLLocationCoordinate2D(latitude: lastLat, longitude: lastLong)
-            let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+            let span = MKCoordinateSpan(latitudeDelta: 0.03, longitudeDelta: 0.03)
             let region = MKCoordinateRegion(center: currCoords, span: span)
             myMap.setRegion(region, animated: true)
             
             minla = region.center.latitude - (region.span.latitudeDelta / 2.0);
-            print(minla)
+            
             maxla = region.center.latitude + (region.span.latitudeDelta / 2.0);
             minlong = region.center.longitude - (region.span.longitudeDelta / 2.0);
             maxlong = region.center.longitude + (region.span.longitudeDelta / 2.0);
-            
+            print("\(minlong) \(maxlong) \(minla) \(maxla)")
             // get data with boarding boundary from api and parse the result into annotationLocations
             let defaulturl = "https://opentripmap-places-v1.p.rapidapi.com/en/places/bbox?lon_min="+String(minlong)+"&lon_max="+String(maxlong)+"&lat_min="+String(minla)+"&lat_max="+String(maxla)
             
             
             getFromAPI(urlrequest: defaulturl)
-            pinLocations(locations: annotationLocations)
+            //pinLocations(locations: annotationLocations)
             
         
         }
         
     }
+    
+    
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         // might be that user didn't enable location service on the device
@@ -206,7 +210,8 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
     
     func getFromAPI (urlrequest:String){
         // clear the annotationlocation list
-        //annotationLocations.removeAll()
+        self.annotationLocations.removeAll()
+        myMap.removeAnnotations(myMap.annotations)
         let headers = [
             "x-rapidapi-host": "opentripmap-places-v1.p.rapidapi.com",
             "x-rapidapi-key": "8af0d82f43msh34e53305797a0cbp197d01jsnac77d9f76adc"
@@ -231,7 +236,7 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
                     let json: NSDictionary = try JSONSerialization.jsonObject(with: data!, options: []) as! NSDictionary
                     let feature: NSArray = json["features"] as! NSArray
                     
-                    //print(feature)
+                    //print("feature:\(feature)")
                     for item in feature{
                         
                         let detail = item as! NSDictionary
@@ -250,7 +255,8 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
                         self.annotationLocations.append(["title": name, "latitude": lat, "longitude": long, "xid":xid, "fromApi": true])
                         
                     }
-                    print(self.annotationLocations)
+                    self.pinLocations(locations: self.annotationLocations)
+                    
                 } catch {
                     print("JSON error: \(error.localizedDescription)")
                 }
@@ -258,8 +264,11 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
         })
         
         dataTask.resume()
+        //print(self.annotationLocations)
+        
        
     }
+    
     
 
 }
