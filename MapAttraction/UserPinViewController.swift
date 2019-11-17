@@ -28,6 +28,10 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
     //variables used to record current coordinates
     var lastLat:Double = 0
     var lastLong:Double = 0
+    var maxla: Double = 0
+    var minla: Double = 0
+    var maxlong: Double = 0
+    var minlong: Double = 0
     
     @IBOutlet weak var myMap: MKMapView!
     let locationManager = CLLocationManager()
@@ -59,8 +63,10 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
                     }
                     
                 }
-                requesturl += "&rate="+String(passedFilterRating)+"&limit="+String(passedFilterDistance)+"&lon_min=11&lon_max=1&lat_min=1&lat_max=1"
-                
+                requesturl += "&rate="+String(passedFilterRating)+"&limit="+String(passedFilterDistance)+"&lon_min="+String(minlong)+"&lon_max="+String(maxlong)+"&lat_min="+String(minla)+"&lat_max="+String(maxla)
+                print(requesturl)
+                getFromAPI(urlrequest: requesturl)
+                pinLocations(locations: annotationLocations)
                 
             }
         }
@@ -77,8 +83,6 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
         if(CLLocationManager.authorizationStatus() == .authorizedWhenInUse || CLLocationManager.authorizationStatus() == .authorizedAlways){
             locationManager.requestLocation()
         }
-        // get data with boarding boundary from api and parse the result into annotationLocations
-        pinLocations(locations: annotationLocations)
         
         //the following code snippet is used to enable touching anywhere on the screen to dismiss keyboard
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing))
@@ -91,6 +95,10 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
         
         
         saveToDB(name: "Jamba juice", tag: ["Restaurant", "water bar"], x: 111, y: 222, description: "Juicy juice", rating: 3)
+        // get data with boarding boundary from api and parse the result into annotationLocations
+        let defaulturl = "https://opentripmap-places-v1.p.rapidapi.com/en/places/bbox?lon_min="+String(minlong)+"&lon_max="+String(maxlong)+"&lat_min="+String(minla)+"&lat_max="+String(maxla)
+        getFromAPI(urlrequest: defaulturl)
+        pinLocations(locations: annotationLocations)
     }
     
 
@@ -155,6 +163,11 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
             let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
             let region = MKCoordinateRegion(center: currCoords, span: span)
             myMap.setRegion(region, animated: true)
+            
+            minla = region.center.latitude - (region.span.latitudeDelta / 2.0);
+            maxla = region.center.latitude + (region.span.latitudeDelta / 2.0);
+            minlong = region.center.longitude - (region.span.longitudeDelta / 2.0);
+            maxlong = region.center.longitude + (region.span.longitudeDelta / 2.0);
         
         }
         
@@ -184,6 +197,8 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
     // operate with api
     
     func getFromAPI (urlrequest:String){
+        // clear the annotationlocation list
+        annotationLocations.removeAll()
         let headers = [
             "x-rapidapi-host": "opentripmap-places-v1.p.rapidapi.com",
             "x-rapidapi-key": "8af0d82f43msh34e53305797a0cbp197d01jsnac77d9f76adc"
