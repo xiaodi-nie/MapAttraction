@@ -20,9 +20,9 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
     var passedFilterDistance:Int = 0
     var passedFilterRating:Int = 1
     
-    let annotationLocations = [
-        ["title": "location 1", "latitude": 37.33627815, "longitude": -122.03096498, "xid":"xid111"],
-        ["title": "location 2", "latitude": 37.33198570, "longitude": -122.02952778, "xid":"xid222"]
+    var annotationLocations = [
+        ["title": "location 1", "latitude": 37.33627815, "longitude": -122.03096498, "xid":"xid111", "fromApi": false],
+        ["title": "location 2", "latitude": 37.33198570, "longitude": -122.02952778, "xid":"xid222", "fromApi": false]
     ]
     
     //variables used to record current coordinates
@@ -47,6 +47,8 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
                 passedFilterDistance = senderVC.filterDistance
                 passedFilterRating = senderVC.filterRating
                 print("\(passedFilterTags) \(passedFilterDistance) \(passedFilterRating)")
+                // call api with filter
+                // pin the result from the api
             }
         }
     }
@@ -62,7 +64,7 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
         if(CLLocationManager.authorizationStatus() == .authorizedWhenInUse || CLLocationManager.authorizationStatus() == .authorizedAlways){
             locationManager.requestLocation()
         }
-        
+        // get data with boarding boundary from api and parse the result into annotationLocations
         pinLocations(locations: annotationLocations)
         
         //the following code snippet is used to enable touching anywhere on the screen to dismiss keyboard
@@ -164,6 +166,56 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
             destVC.xid = ((sender as! MKAnnotationView).annotation as! PinAnnotation).xid
 
         }
+    }
+    
+    // operate with api
+    
+    func getFromAPI (urlrequest:String){
+        let headers = [
+            "x-rapidapi-host": "opentripmap-places-v1.p.rapidapi.com",
+            "x-rapidapi-key": "8af0d82f43msh34e53305797a0cbp197d01jsnac77d9f76adc"
+        ]
+        
+//        let request = NSMutableURLRequest(url: NSURL(string: "https://opentripmap-places-v1.p.rapidapi.com/en/places/bbox?lon_min=100&lon_max=100&lat_min=100&lat_max=100")! as URL,
+//                                          cachePolicy: .useProtocolCachePolicy,
+//                                          timeoutInterval: 10.0)
+        let request = NSMutableURLRequest(url: NSURL(string: urlrequest)! as URL,
+                                          cachePolicy: .useProtocolCachePolicy,
+                                          timeoutInterval: 10.0)
+
+        request.httpMethod = "GET"
+        request.allHTTPHeaderFields = headers
+        
+        let session = URLSession.shared
+        let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
+            if (error != nil) {
+                print(error)
+            } else {
+                do {
+                    let json: NSDictionary = try JSONSerialization.jsonObject(with: data!, options: []) as! NSDictionary
+                    let feature: NSArray = json["features"] as! NSArray
+                    // print(feature)
+                    for item in feature{
+                        let detail = item as! NSDictionary
+                        let geometry = detail["geometry"] as! NSDictionary
+                        let coordinates = geometry["coordinates"] as! NSArray
+                        let long: Double = coordinates[0] as! Double
+                        let lat: Double = coordinates[1] as! Double
+                        let properties = detail["properties"] as! NSDictionary
+                        let name: String = properties["name"]! as! String
+                        let rate: Double = properties["rate"]! as! Double
+                        let xid: String = properties["xid"]! as! String
+                        print(name+"->", xid+"->", String(rate)+"->",String(long)+"->",String(lat))
+                        self.annotationLocations.append(contentsOf: [["title": name, "latitude": lat, "longitude": long, "xid":xid, "fromApi": true]])
+                    }
+                } catch {
+                    print("JSON error: \(error.localizedDescription)")
+                }
+            }
+        })
+        
+        dataTask.resume()
+       
     }
     
 
