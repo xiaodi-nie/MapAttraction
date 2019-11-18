@@ -55,20 +55,39 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
                 print("\(passedFilterTags) \(passedFilterDistance) \(passedFilterRating)")
                 // call api with filter
                 // pin the result from the api
-                var requesturl = "https://opentripmap-places-v1.p.rapidapi.com/en/places/bbox?src_attr="
+                var requesturl = "https://opentripmap-places-v1.p.rapidapi.com/en/places/bbox?"
                 var i = 0
-                for tag in passedFilterTags{
-                    i += 1
-                    requesturl = requesturl + tag
-                    if(i < passedFilterTags.count){
-                        requesturl = requesturl + "%252C%20"
+                if(passedFilterTags.count != 0){
+                    requesturl += "src_attr="
+                    for tag in passedFilterTags{
+                        i += 1
+                        requesturl = requesturl + tag
+                        if(i < passedFilterTags.count){
+                            requesturl = requesturl + "%252C%20"
+                        }
+                        
                     }
-                    
                 }
-                requesturl += "&rate="+String(passedFilterRating)+"&limit="+String(passedFilterDistance)+"&lon_min="+String(minlong)+"&lon_max="+String(maxlong)+"&lat_min="+String(minla)+"&lat_max="+String(maxla)
-                print(requesturl)
+                
+                if(passedFilterRating != nil){
+                    requesturl += "&rate="+String(passedFilterRating)
+                }
+                
+                if(passedFilterDistance != nil){
+                    var minLong : Double = lastLong - 0.0000089982311916*Double(passedFilterDistance)
+                    var maxLong : Double = lastLong + 0.0000089982311916*Double(passedFilterDistance)
+                    var minLat : Double = lastLat - 0.000089982311916*Double(passedFilterDistance)
+                    var maxLat : Double = lastLat + 0.000089982311916*Double(passedFilterDistance)
+                    requesturl += "&lon_min="+String(minLong)+"&lon_max="+String(maxLong)+"&lat_min="+String(minLat)+"&lat_max="+String(maxLat)
+                }
+                
+                
+         
+                
                 getFromAPI(urlrequest: requesturl)
-                //pinLocations(locations: annotationLocations)
+               
+                
+                pinLocations(locations: self.annotationLocations)
                 
             }
         }
@@ -134,7 +153,6 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
     func pinLocations(locations:[[String:Any]]){
         
         for location in locations{
-            print(location)
             let coord = CLLocationCoordinate2DMake(location["latitude"] as! CLLocationDegrees, location["longitude"] as! CLLocationDegrees)
             let annotation = PinAnnotation(title: location["title"] as! String, xid: location["xid"] as! String, coordinate: coord)
             myMap.addAnnotation(annotation)
@@ -170,7 +188,7 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
             maxla = region.center.latitude + (region.span.latitudeDelta / 2.0);
             minlong = region.center.longitude - (region.span.longitudeDelta / 2.0);
             maxlong = region.center.longitude + (region.span.longitudeDelta / 2.0);
-            print("\(minlong) \(maxlong) \(minla) \(maxla)")
+            //print("\(minlong) \(maxlong) \(minla) \(maxla)")
 
             // get data with boarding boundary from api and parse the result into annotationLocations
             let defaulturl = "https://opentripmap-places-v1.p.rapidapi.com/en/places/bbox?lon_min="+String(minlong)+"&lon_max="+String(maxlong)+"&lat_min="+String(minla)+"&lat_max="+String(maxla)
@@ -218,6 +236,7 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
         let headers = [
             "x-rapidapi-host": "opentripmap-places-v1.p.rapidapi.com",
             "x-rapidapi-key": "8af0d82f43msh34e53305797a0cbp197d01jsnac77d9f76adc"
+            //"x-rapidapi-key": "SIGN-UP-FOR-KEY"
         ]
         
 //        let request = NSMutableURLRequest(url: NSURL(string: "https://opentripmap-places-v1.p.rapidapi.com/en/places/bbox?lon_min=100&lon_max=100&lat_min=100&lat_max=100")! as URL,
@@ -237,8 +256,8 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
             } else {
                 do {
                     let json: NSDictionary = try JSONSerialization.jsonObject(with: data!, options: []) as! NSDictionary
+                    if (json != nil && json["features"] != nil) {
                     let feature: NSArray = json["features"] as! NSArray
-                    
                     //print("feature:\(feature)")
                     for item in feature{
                         
@@ -251,16 +270,21 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
                         let name: String = properties["name"]! as! String
                         let rate: Double = properties["rate"]! as! Double
                         let xid: String = properties["xid"]! as! String
-                        print(name+"->", xid+"->", String(rate)+"->",String(long)+"->",String(lat))
-                        print(name)
-                        print(lat)
-                        print(long)
+//                        print(name+"->", xid+"->", String(rate)+"->",String(long)+"->",String(lat))
+//                        print(name)
+//                        print(lat)
+//                        print(long)
                         self.annotationLocations.append(["title": name, "latitude": lat, "longitude": long, "xid":xid, "fromApi": true])
                         
                     }
+                    // print(self.annotationLocations)
                     self.pinLocations(locations: self.annotationLocations)
-                    
-                } catch {
+                    }
+                    else{
+                        print("API result is empty")
+                        print(json)
+                    }
+                    } catch {
                     print("JSON error: \(error.localizedDescription)")
                 }
             }
