@@ -134,7 +134,7 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
     func pinLocations(locations:[[String:Any]]){
         
         for location in locations{
-            
+            print(location)
             let coord = CLLocationCoordinate2DMake(location["latitude"] as! CLLocationDegrees, location["longitude"] as! CLLocationDegrees)
             let annotation = PinAnnotation(title: location["title"] as! String, xid: location["xid"] as! String, coordinate: coord)
             myMap.addAnnotation(annotation)
@@ -171,13 +171,14 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
             minlong = region.center.longitude - (region.span.longitudeDelta / 2.0);
             maxlong = region.center.longitude + (region.span.longitudeDelta / 2.0);
             print("\(minlong) \(maxlong) \(minla) \(maxla)")
+
             // get data with boarding boundary from api and parse the result into annotationLocations
             let defaulturl = "https://opentripmap-places-v1.p.rapidapi.com/en/places/bbox?lon_min="+String(minlong)+"&lon_max="+String(maxlong)+"&lat_min="+String(minla)+"&lat_max="+String(maxla)
             
-            
+            //print(defaulturl)
             getFromAPI(urlrequest: defaulturl)
             //pinLocations(locations: annotationLocations)
-            
+            getLocationFromDBWithInRange(minX: minlong, maxX: maxlong, minY: minla, maxY: maxla)
         
         }
         
@@ -202,7 +203,6 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
         {
             let destVC = segue.destination as! PinDetailViewController
             destVC.xid = ((sender as! MKAnnotationView).annotation as! PinAnnotation).xid
-
         }
     }
     
@@ -210,8 +210,11 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
     
     func getFromAPI (urlrequest:String){
         // clear the annotationlocation list
+
         self.annotationLocations.removeAll()
         myMap.removeAnnotations(myMap.annotations)
+
+ 
         let headers = [
             "x-rapidapi-host": "opentripmap-places-v1.p.rapidapi.com",
             "x-rapidapi-key": "8af0d82f43msh34e53305797a0cbp197d01jsnac77d9f76adc"
@@ -267,6 +270,30 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
         //print(self.annotationLocations)
         
        
+    }
+    
+    func getLocationFromDBWithInRange(minX: Double, maxX: Double, minY: Double, maxY: Double ) {
+        // clear all annotationLocation list
+        self.annotationLocations.removeAll()
+        let ref = Database.database().reference(fromURL: "https://mapattraction.firebaseio.com/")
+        ref.child("locations").observeSingleEvent(of: .value, with: { (snapshot) in
+            for child in snapshot.children{
+                let snap = child as! DataSnapshot
+                let key = snap.key
+                let value = snap.value!
+                let info = value as! NSDictionary
+                let id :Int = Int(info["dbIndex"] as! Int)
+                let x :Double = Double(info["x"] as! Double)
+                let y :Double = Double(info["y"] as! Double)
+                if (x <= maxX && x >= minX && y >= minY && y <= maxY ){
+                    self.annotationLocations.append(["title": key, "latitude": y, "longitude": x, "xid":"pin", "fromApi": false])
+                }
+            }
+            pinLocations(locations: annotationLocations)
+        })
+        { (error) in
+            print(error.localizedDescription)
+        }
     }
     
     
