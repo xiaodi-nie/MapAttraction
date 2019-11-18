@@ -14,7 +14,7 @@ import Firebase
 class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDelegate, CLLocationManagerDelegate {
     
     var coordinates:[(Double,Double)] = []
-    
+    var dbIndex:Int = 0;
     //variables passed from the filterViewController
     var passedFilterTags:[String] = []
     var passedFilterDistance:Int = 0
@@ -51,6 +51,13 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
         }
     }
     
+    //update db
+    func saveToDB (name: String, tag: [String], x: Double, y: Double, description: String, rating: Int){
+        let ref = Database.database().reference(fromURL: "https://mapattraction.firebaseio.com/")
+        self.dbIndex += 1
+        ref.child("locations").child(name).updateChildValues(["xid": dbIndex,"tag": tag, "x": x,"y": y, "description": description,"rating": rating])
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         myMap.delegate = self
@@ -73,22 +80,98 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
         
         searchBar.showsScopeBar = true
         searchBar.delegate = self
-        
-        
-        saveToDB(name: "Jamba juice", tag: ["Restaurant", "water bar"], x: 111, y: 222, description: "Juicy juice", rating: 3)
+       // getLocationFromDBWithInRange(minX: 100.0, maxX: 200.0, minY: 200.0, maxY: 300.0)
+        getDetails(xid: "W274295725")
+        saveToDB(name: "Jamba juice6", tag: ["Restaurant", "water bar"], x: 111, y: 222, description: "Juicy juice", rating: 3)
+        saveToDB(name: "Jamba juice7", tag: ["Restaurant", "water bar"], x: 111, y: 222, description: "Juicy juice", rating: 3)
     }
     
+    func getAllPins(minLong: Double,maxLong: Double,minLat: Double,maxLat: Double){
+        
+        let ref = Database.database().reference(fromURL: "https://mapattraction.firebaseio.com/")
+        ref.child("locations").child("").observeSingleEvent(of: .value, with: { (snapshot) in
+                for child in snapshot.children{
+                    let snap = child as! DataSnapshot
+                    let key = snap.key
+                    let value = snap.value!
+                    if (key == "tag"){
+                        print(value);
+                    }
+                }
+            })
+            { (error) in
+                print(error.localizedDescription)
+            }
+    }
 
+    
+    
+    func getDetails (xid : String){
+        let headers = [
+            "x-rapidapi-host": "opentripmap-places-v1.p.rapidapi.com",
+            "x-rapidapi-key": "8af0d82f43msh34e53305797a0cbp197d01jsnac77d9f76adc"
+        ]
+
+        let request = NSMutableURLRequest(url: NSURL(string: "https://opentripmap-places-v1.p.rapidapi.com/en/places/xid/" + xid)! as URL,
+                                                cachePolicy: .useProtocolCachePolicy,
+                                            timeoutInterval: 10.0)
+        request.httpMethod = "GET"
+        request.allHTTPHeaderFields = headers
+
+        let session = URLSession.shared
+        let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
+            if (error != nil) {
+                print(error)
+            } else {
+                do {
+                  let json: NSDictionary = try JSONSerialization.jsonObject(with: data!, options: []) as! NSDictionary
+                  print(json)
+                    let feature = json["bbox"]
+                   print(json["name"])
+                   print(json["kinds"])
+               } catch {
+                   print("JSON error: \(error.localizedDescription)")
+               }
+
+            }
+        })
+
+        dataTask.resume()
+    }
+    
+    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         getData(name: searchBar.text! )
     }
 
     
-    //update db
-    func saveToDB (name: String, tag: [String], x: Double, y: Double, description: String, rating: Int){
-        let ref = Database.database().reference(fromURL: "https://mapattraction.firebaseio.com/")
-        ref.child("locations").child(name).updateChildValues(["tag": tag, "x": x,"y": y, "description": description,"rating": rating])
+    
+    
+    
+    //called after the search button on keyboard is pressed
+    func getLocationFromDBWithInRange(minX: Double, maxX: Double, minY: Double, maxY: Double ) {
+         let ref = Database.database().reference(fromURL: "https://mapattraction.firebaseio.com/")
+    ref.child("locations").observeSingleEvent(of: .value, with: { (snapshot) in
+            for child in snapshot.children{
+                let snap = child as! DataSnapshot
+                let key = snap.key
+                let value = snap.value!
+                let info = value as! NSDictionary
+//                print(key)
+//                print(info)
+                let id :Int = Int(info["dbIndex"] as! Int)
+                let x :Double = Double(info["x"] as! Double)
+                let y :Double = Double(info["y"] as! Double)
+                if (x <= maxX && x >= minX && y >= minY && y <= maxY ){
+                //    print(id,x,y)
+                }
+            }
+        })
+        { (error) in
+            print(error.localizedDescription)
+        }
     }
+    
     
     //called after the search button on keyboard is pressed
     func getData(name :String){
@@ -108,15 +191,14 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
         }
     }
     
+    
     //pin annotations to the map
     func pinLocations(locations:[[String:Any]]){
-        
         for location in locations{
             let coord = CLLocationCoordinate2DMake(location["latitude"] as! CLLocationDegrees, location["longitude"] as! CLLocationDegrees)
             let annotation = PinAnnotation(title: location["title"] as! String, xid: location["xid"] as! String, coordinate: coord)
             myMap.addAnnotation(annotation)
         }
-        
     }
     
     //called after an annotation is clicked on the map
