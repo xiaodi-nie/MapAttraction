@@ -282,14 +282,14 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
                 let key = snap.key
                 let value = snap.value!
                 let info = value as! NSDictionary
-                let id :Int = Int(info["dbIndex"] as! Int)
+                let id  = info["xid"]
                 let x :Double = Double(info["x"] as! Double)
                 let y :Double = Double(info["y"] as! Double)
                 if (x <= maxX && x >= minX && y >= minY && y <= maxY ){
-                    self.annotationLocations.append(["title": key, "latitude": y, "longitude": x, "xid":"pin", "fromApi": false])
+                    self.annotationLocations.append(["title": key, "latitude": y, "longitude": x, "xid":id, "fromApi": false])
                 }
             }
-            pinLocations(locations: annotationLocations)
+            self.pinLocations(locations: self.annotationLocations)
         })
         { (error) in
             print(error.localizedDescription)
