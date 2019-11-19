@@ -139,28 +139,54 @@ class CustomLocInfoViewController: UIViewController, UITableViewDataSource, UITa
     //}
     
     
-    func saveToDB (name: String, tag: [String], x: Double, y: Double, description: String){
-        
-    }
     //todo
     //check if data is valid to be added to the database, i.e coordinates can't repeat, same entry can't be entered twice
     func submitToDb()->Bool{
         
-        print("latitude: \(latitude)")
-        print("longitude: \(longitude)")
-        print("tags: \(selectedTags)")
-        print("name: \(String(describing: nameTextField.text))")
-        print("description: \(String(describing: descriptionTextField.text))")
-        print("rating:  \(selectedRating)")
-        
-//        let ref = Database.database().reference(fromURL: "https://mapattraction.firebaseio.com/")
-//        ref.child("locations").child(nameTextField.text!).updateChildValues(["tag": selectedTags, "x": latitude,"y": longitude, "description": descriptionTextField.text!])
-        
+//        print("latitude: \(latitude)")
+//        print("longitude: \(longitude)")
+//        print("tags: \(selectedTags)")
+//        print("name: \(String(describing: nameTextField.text))")
+//        print("description: \(String(describing: descriptionTextField.text))")
+//        print("rating:  \(selectedRating)")
+        var flag : Bool = true
         let ref = Database.database().reference(fromURL: "https://mapattraction.firebaseio.com/")
-        let id = String(Int(NSDate.timeIntervalSinceReferenceDate*1000))
+        let group = DispatchGroup()
+           group.enter()
         
-        ref.child("locations").child(nameTextField.text!).updateChildValues(["xid": id,"tag": selectedTags, "x": latitude,"y": longitude, "description": descriptionTextField.text!,"rating": selectedRating])
-        return true
+        DispatchQueue.main.async {
+        ref.child("locations").observeSingleEvent(of: .value, with: { (snapshot) in
+            for child in snapshot.children{
+                let snap = child as! DataSnapshot
+                let key = snap.key
+                let value = snap.value!
+                let info = value as! NSDictionary
+                let id  = info["xid"]
+                let x :Double = Double(info["x"] as! Double)
+                let y :Double = Double(info["y"] as! Double)
+                print(key,x,self.latitude,y,self.longitude)
+                if (x == self.latitude && y == self.longitude ){
+                    print("same")
+                    flag = false
+                }
+            }
+        })
+        group.leave()
+        }
+         group.notify(queue: .main) {
+        let id = String(Int(NSDate.timeIntervalSinceReferenceDate*1000))
+        if (flag == true){
+            print("will add this pt", flag)
+            ref.child("locations").child(self.nameTextField.text!).updateChildValues(["xid": id,"tag": self.selectedTags, "x": self.latitude,"y": self.longitude, "description": self.descriptionTextField.text!,"rating": self.selectedRating])
+        }
+    }
+        if (flag){
+                 return true
+                 }
+                 else{
+                 return false
+                 }
+                 
     }
     
     //check if the user input is valid before performing the segue

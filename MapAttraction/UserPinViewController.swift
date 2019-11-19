@@ -66,7 +66,7 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
         //print(defaulturl)
         getFromAPI(urlrequest: defaulturl)
         //pinLocations(locations: annotationLocations)
-        getLocationFromDBWithInRange(minX: minla, maxX: maxla, minY: minlong, maxY: maxlong)
+        getLocationFromDBWithInRange(minX: minla, maxX: maxla, minY: minlong, maxY: maxlong, ratingMin: -1, tags: [])
     }
     
     //destination of the unwind segue linked to the cancel button on the filterViewController
@@ -81,6 +81,10 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
                 passedFilterTags = senderVC.filterTags
                 passedFilterDistance = senderVC.filterDistance
                 passedFilterRating = senderVC.filterRating
+                var minLong : Double = lastLong - 0.0000089982311916*Double(passedFilterDistance)
+                var maxLong : Double = lastLong + 0.0000089982311916*Double(passedFilterDistance)
+                var minLat : Double = lastLat - 0.000089982311916*Double(passedFilterDistance)
+                var maxLat : Double = lastLat + 0.000089982311916*Double(passedFilterDistance)
                 print("\(passedFilterTags) \(passedFilterDistance) \(passedFilterRating)")
                 // call api with filter
                 // pin the result from the api
@@ -105,16 +109,13 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
                 }
                 
                 if(passedFilterDistance != 0){
-                    var minLong : Double = lastLong - 0.0000089982311916*Double(passedFilterDistance)
-                    var maxLong : Double = lastLong + 0.0000089982311916*Double(passedFilterDistance)
-                    var minLat : Double = lastLat - 0.000089982311916*Double(passedFilterDistance)
-                    var maxLat : Double = lastLat + 0.000089982311916*Double(passedFilterDistance)
                     requesturl += "&lon_min="+String(minLong)+"&lon_max="+String(maxLong)+"&lat_min="+String(minLat)+"&lat_max="+String(maxLat)
                 }
                 else{
                     //give a default box as min lat, max lat, max long and min long
                 }
                 getFromAPI(urlrequest: requesturl)
+                getLocationFromDBWithInRange(minX: minla, maxX: maxla, minY: minlong, maxY: maxlong, ratingMin: passedFilterRating, tags:passedFilterTags)
                 //pinLocations(locations: self.annotationLocations)
             }
         }
@@ -145,7 +146,7 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
         
         searchBar.showsScopeBar = true
         searchBar.delegate = self
-       // getLocationFromDBWithInRange(minX: 100.0, maxX: 200.0, minY: 200.0, maxY: 300.0)
+
         saveToDB(name: "Jamba juice6", tag: ["Restaurant", "water bar"], x: 111, y: 222, description: "Juicy juice", rating: 3)
         saveToDB(name: "Jamba juice7", tag: ["Restaurant", "water bar"], x: 111, y: 222, description: "Juicy juice", rating: 3)
     }
@@ -233,7 +234,7 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
             //print(defaulturl)
             getFromAPI(urlrequest: defaulturl)
             //pinLocations(locations: annotationLocations)
-            getLocationFromDBWithInRange(minX: minla, maxX: maxla, minY: minlong, maxY: maxlong)
+            getLocationFromDBWithInRange(minX: minla, maxX: maxla, minY: minlong, maxY: maxlong, ratingMin: -1, tags: [])
         
         }
         
@@ -333,7 +334,7 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
        
     }
     
-    func getLocationFromDBWithInRange(minX: Double, maxX: Double, minY: Double, maxY: Double ) {
+    func getLocationFromDBWithInRange(minX: Double, maxX: Double, minY: Double, maxY: Double,ratingMin: Int, tags: [String] ) {
         print("minx: \(minX), maxx:\(maxX), miny:\(minY),maxy:\(maxY)")
         // clear all annotationLocation list
         self.annotationLocationsDb.removeAll()
@@ -346,11 +347,15 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
                 let value = snap.value!
                 let info = value as! NSDictionary
                 let id  = info["xid"]
+                let kinds : [String] = info["tag"] as![String]
+                let rating:Int = Int(info["rating"] as! Int)
                 let x :Double = Double(info["x"] as! Double)
                 let y :Double = Double(info["y"] as! Double)
-                print("x: \(x), y: \(y)")
-                if (x <= maxX && x >= minX && y >= minY && y <= maxY ){
+                
+                for kind in kinds{
+                    if (x <= maxX && x >= minX && y >= minY && y <= maxY && rating >= ratingMin && (tags.contains(kind) || tags.isEmpty) ){
                     self.annotationLocationsDb.append(["title": key, "latitude": x, "longitude": y, "xid":id, "fromApi": false])
+                }
                 }
             }
             print("in getdatafromdb \(self.annotationLocationsDb)")

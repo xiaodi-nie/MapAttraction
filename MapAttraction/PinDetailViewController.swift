@@ -60,7 +60,6 @@ class PinDetailViewController: UIViewController {
                     print(address["house_number"],address["road"],address["city"],address["state"],address["country"])
                     }
                    print(json["kinds"])
-                    
                     if let wiki : NSDictionary = json["wikipedia_extracts"] as? NSDictionary {
                     print(wiki["text"])
                     }
