@@ -13,6 +13,21 @@ import Firebase
 class PinDetailViewController: UIViewController {
     //passed from UserPinViewController
     var xid:String = ""
+    var imageUrl:String = ""
+    
+    @IBOutlet weak var pinImage: UIImageView!
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var addressLabel: UILabel!
+    @IBOutlet weak var ratingLabel: UILabel!
+    @IBOutlet weak var descriptionLabel: UITextView!
+    @IBOutlet weak var tagsLabel: UILabel!
+    
+    
+    
+    
+    
+    
+    
     func getDetailsFromDB(xid : String){
         let ref = Database.database().reference(fromURL: "https://mapattraction.firebaseio.com/")
         ref.child("locations").observeSingleEvent(of: .value, with: { (snapshot) in
@@ -22,13 +37,23 @@ class PinDetailViewController: UIViewController {
                 let value = snap.value!
                 let info = value as! NSDictionary
                 let id :String  = info["xid"] as! String
-                let tag : [String] = info["tag"] as! [String]
+                let tags : [String] = info["tag"] as! [String]
                 let description : String = info["description"] as! String
                 let rating : Int = info["rating"] as! Int
                 let x :Double = Double(info["x"] as! Double)
                 let y :Double = Double(info["y"] as! Double)
                 if (id == xid){
-                    print(key, tag, description, rating)
+                    print("name ", key, "tag ", tags, "des ", description, "rate ", rating)
+                    self.nameLabel.text = key
+                    var tagstring = ""
+                    for tag in tags{
+                        tagstring.append(tag)
+                        tagstring.append(", ")
+                    }
+                    self.tagsLabel.text = String(tagstring.replacingOccurrences(of: "_", with: " ").dropLast().dropLast())
+                    self.addressLabel.text = "(\(x), \(y))"
+                    self.ratingLabel.text = "\(rating) Star(s)"
+                    self.descriptionLabel.text = description
                 }
             }
         })
@@ -49,22 +74,49 @@ class PinDetailViewController: UIViewController {
         let session = URLSession.shared
         let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
             if (error != nil) {
-                print(error)
+                print(error ?? "error")
             } else {
                 do {
                   let json: NSDictionary = try JSONSerialization.jsonObject(with: data!, options: []) as! NSDictionary
-                  print(json)
-                    let feature = json["bbox"]
-                   print(json["name"])
-                    if let address : NSDictionary = json["address"] as! NSDictionary {
-                    print(address["house_number"],address["road"],address["city"],address["state"],address["country"])
+                    print("name: ", json["name"]!)
+                    
+                    OperationQueue.main.addOperation {
+                        //update name label
+                        self.nameLabel.text = (json["name"] as! String)
+                        //update address label
+                        if let address : NSDictionary = json["address"] as? NSDictionary {
+                            print("address ", address["house_number"],address["road"],address["city"],address["state"],address["country"])
+                            let addrstring = "\(address["house_number"] ?? "") \(address["road"] ?? ""), \(address["city"] ?? "") \(address["state"] ?? ""), \(address["country"] ?? "")"
+                            self.addressLabel.text = addrstring
+                        }
+                        //update tags label
+                        print("kinds ", json["kinds"]!)
+                        if let tags: String = json["kinds"] as? String{
+                            self.tagsLabel.text = tags.replacingOccurrences(of: ",", with: ", ").replacingOccurrences(of: "_", with: " ")
+                        }
+                        //update description textview
+                        if let wiki : NSDictionary = json["wikipedia_extracts"] as? NSDictionary {
+                            print("description ", wiki["text"] ?? "")
+                            self.descriptionLabel.text = (wiki["text"] as! String)
+                        }else{
+                            self.descriptionLabel.text = "No available descriptions."
+                        }
+                        //update rating label
+                        print("rate ", json["rate"] ?? "0")
+                        if let rate: String = json["rate"] as? String{
+                            if rate == "0"{
+                                self.ratingLabel.text = "No available ratings"
+                            }else{
+                                self.ratingLabel.text = "\(rate) Star(s)"
+                            }
+                        }
                     }
-                   print(json["kinds"])
-                    if let wiki : NSDictionary = json["wikipedia_extracts"] as? NSDictionary {
-                    print(wiki["text"])
+
+                    if let preview: NSDictionary = json["preview"] as? NSDictionary{
+                        let url = URL(string: preview["source"] as! String)!
+                        self.pinImage.load(url: url)
                     }
-                   print(json["rate"])
-                   print(json["image"])
+                   
                } catch {
                    print("JSON error: \(error.localizedDescription)")
                }
@@ -88,7 +140,9 @@ class PinDetailViewController: UIViewController {
             getDetailsFromAPI(xid: xid)
         }
         
-
+        self.pinImage.contentMode = .scaleAspectFit
+        //self.pinImage.image = UIImage(named: "poke house")
+        
         // Do any additional setup after loading the view.
     }
     
@@ -103,4 +157,18 @@ class PinDetailViewController: UIViewController {
     }
     */
 
+}
+
+extension UIImageView {
+    func load(url: URL) {
+        DispatchQueue.global().async { [weak self] in
+            if let data = try? Data(contentsOf: url) {
+                if let image = UIImage(data: data) {
+                    DispatchQueue.main.async {
+                        self?.image = image
+                    }
+                }
+            }
+        }
+    }
 }

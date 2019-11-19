@@ -15,7 +15,7 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
     @IBOutlet weak var ratingFilterTableView: UITableView!
     
     //data source of the tableViews on the view controller
-    let tags:[String] = ["Interesting places", "Accomodations", "Adult", "Amusements", "Architecture","Cultual", "Historical", "Industrial facilities", "Natural", "Other", "Religion", "Sport", "Tourist facilities", "Foods", "Shops", "Transport"]
+    let tags:[String] = ["Interesting places", "Accomodations", "Adult", "Amusements", "Architecture","Cultural", "Historical", "Industrial facilities", "Natural", "Other", "Religion", "Sport", "Tourist facilities", "Foods", "Shops", "Transport"]
     let ratings:[String] = [">= 1 Star", ">= 2 Stars", ">= 3 Stars"]
     let distances: [String] = ["< 500m", "< 1km", "< 3km", "< 5km"]
     let distancesNum: [Int] = [500, 1000, 3000, 5000]
