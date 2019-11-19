@@ -25,6 +25,11 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
         ["title": "location 2", "latitude": 37.33198570, "longitude": -122.02952778, "xid":"xid222", "fromApi": false]
     ]
     
+    var annotationLocationsDb = [
+        ["title": "location 1", "latitude": 37.33627815, "longitude": -122.03096498, "xid":"xid111", "fromApi": false],
+        ["title": "location 2", "latitude": 37.33198570, "longitude": -122.02952778, "xid":"xid222", "fromApi": false]
+    ]
+    
     //variables used to record current coordinates
     var lastLat:Double = 0
     var lastLong:Double = 0
@@ -196,13 +201,14 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
             maxlong = region.center.longitude + (region.span.longitudeDelta / 2.0);
             //print("\(minlong) \(maxlong) \(minla) \(maxla)")
 
+            
             // get data with boarding boundary from api and parse the result into annotationLocations
             let defaulturl = "https://opentripmap-places-v1.p.rapidapi.com/en/places/bbox?lon_min="+String(minlong)+"&lon_max="+String(maxlong)+"&lat_min="+String(minla)+"&lat_max="+String(maxla)
             
             //print(defaulturl)
             getFromAPI(urlrequest: defaulturl)
             //pinLocations(locations: annotationLocations)
-            getLocationFromDBWithInRange(minX: minlong, maxX: maxlong, minY: minla, maxY: maxla)
+            getLocationFromDBWithInRange(minX: minla, maxX: maxla, minY: minlong, maxY: maxlong)
         
         }
         
@@ -303,8 +309,10 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
     }
     
     func getLocationFromDBWithInRange(minX: Double, maxX: Double, minY: Double, maxY: Double ) {
+        print("minx: \(minX), maxx:\(maxX), miny:\(minY),maxy:\(maxY)")
         // clear all annotationLocation list
-        self.annotationLocations.removeAll()
+        self.annotationLocationsDb.removeAll()
+        print("after clear: \(self.annotationLocationsDb)")
         let ref = Database.database().reference(fromURL: "https://mapattraction.firebaseio.com/")
         ref.child("locations").observeSingleEvent(of: .value, with: { (snapshot) in
             for child in snapshot.children{
@@ -315,11 +323,13 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
                 let id  = info["xid"]
                 let x :Double = Double(info["x"] as! Double)
                 let y :Double = Double(info["y"] as! Double)
+                print("x: \(x), y: \(y)")
                 if (x <= maxX && x >= minX && y >= minY && y <= maxY ){
-                    self.annotationLocations.append(["title": key, "latitude": y, "longitude": x, "xid":id, "fromApi": false])
+                    self.annotationLocationsDb.append(["title": key, "latitude": x, "longitude": y, "xid":id, "fromApi": false])
                 }
             }
-            self.pinLocations(locations: self.annotationLocations)
+            print("in getdatafromdb \(self.annotationLocationsDb)")
+            self.pinLocations(locations: self.annotationLocationsDb)
         })
         { (error) in
             print(error.localizedDescription)
