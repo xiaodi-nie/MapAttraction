@@ -14,6 +14,12 @@ class SubmitCustomLocViewController: UIViewController {
     var name: String = ""
     var locDescription: String = ""
     
+
+    @IBAction func btnGoToFirstVCTapped(_ sender: UIButton) {
+            performSegue(withIdentifier: "unwindFromSubmitVC", sender: nil)
+        }
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 //        print("custom location:")
@@ -23,6 +29,7 @@ class SubmitCustomLocViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
+
 
     /*
     // MARK: - Navigation

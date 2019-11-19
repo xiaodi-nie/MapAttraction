@@ -45,6 +45,30 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
     
     @IBOutlet weak var searchBar: UISearchBar!
     
+    
+    @IBAction func unwindFromSubmitVC(segue:UIStoryboardSegue) {
+        let currCoords = CLLocationCoordinate2D(latitude: lastLat, longitude: lastLong)
+        let span = MKCoordinateSpan(latitudeDelta: 0.03, longitudeDelta: 0.03)
+        let region = MKCoordinateRegion(center: currCoords, span: span)
+        //myMap.setRegion(region, animated: true)
+        
+        minla = region.center.latitude - (region.span.latitudeDelta / 2.0);
+        
+        maxla = region.center.latitude + (region.span.latitudeDelta / 2.0);
+        minlong = region.center.longitude - (region.span.longitudeDelta / 2.0);
+        maxlong = region.center.longitude + (region.span.longitudeDelta / 2.0);
+        //print("\(minlong) \(maxlong) \(minla) \(maxla)")
+
+        
+        // get data with boarding boundary from api and parse the result into annotationLocations
+        let defaulturl = "https://opentripmap-places-v1.p.rapidapi.com/en/places/bbox?lon_min="+String(minlong)+"&lon_max="+String(maxlong)+"&lat_min="+String(minla)+"&lat_max="+String(maxla)
+        
+        //print(defaulturl)
+        getFromAPI(urlrequest: defaulturl)
+        //pinLocations(locations: annotationLocations)
+        getLocationFromDBWithInRange(minX: minla, maxX: maxla, minY: minlong, maxY: maxlong)
+    }
+    
     //destination of the unwind segue linked to the cancel button on the filterViewController
     @IBAction func cancel(_ unwindSegue: UIStoryboardSegue) {
         // Use data from the view controller which initiated the unwind segue
