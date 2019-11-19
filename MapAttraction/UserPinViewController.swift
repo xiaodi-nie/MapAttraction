@@ -138,10 +138,6 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
         }
     }
     
-    //save value into db
-    func saveToDB (name: String, tag: [String], x: Double, y: Double, description: String, rating: Int){
-        
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -175,6 +171,7 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         getData(name: searchBar.text! )
+        
     }
 
     
@@ -185,20 +182,36 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
     
     //called after the search button on keyboard is pressed
     func getData(name :String){
-         let ref = Database.database().reference(fromURL: "https://mapattraction.firebaseio.com/")
-    ref.child("locations").child(name).observeSingleEvent(of: .value, with: { (snapshot) in
-            for child in snapshot.children{
-                let snap = child as! DataSnapshot
-                let key = snap.key
-                let value = snap.value!
-                if (key == "tag"){
-                    print(value);
-                }
-            }
-        })
-        { (error) in
-            print(error.localizedDescription)
-        }
+        self.annotationLocationsDb.removeAll()
+        print(name)
+        myMap.removeAnnotations(myMap.annotations)
+        print("after clear: \(self.annotationLocationsDb)")
+                let ref = Database.database().reference(fromURL: "https://mapattraction.firebaseio.com/")
+         ref.child("locations").observeSingleEvent(of: .value, with: { (snapshot) in
+             for child in snapshot.children{
+                 let snap = child as! DataSnapshot
+                 let key = snap.key
+                 let value = snap.value!
+                 let info = value as! NSDictionary
+                 let id :String  = info["xid"] as! String
+                 let tag : [String] = info["tag"] as! [String]
+                 let description : String = info["description"] as! String
+                 let rating : Int = info["rating"] as! Int
+                 let x :Double = Double(info["x"] as! Double)
+                 let y :Double = Double(info["y"] as! Double)
+                if (key.contains(name)){
+                      print("yes key is" , key)
+                     self.annotationLocationsDb.append(["title": key, "latitude": x, "longitude": y, "xid":id, "fromApi": false])
+                 }
+             }
+            self.pinLocations(locations:self.annotationLocationsDb)
+         })
+         { (error) in
+             print(error.localizedDescription)
+         }
+
+
+        
     }
     
     
@@ -329,7 +342,7 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
                         self.annotationLocations.append(["title": name, "latitude": lat, "longitude": long, "xid":xid, "fromApi": true])
                         
                     }
-                    print("in getfromapi \(self.annotationLocations)")
+                   // print("in getfromapi \(self.annotationLocations)")
                     self.pinLocations(locations: self.annotationLocations)
                     }
                     else{
@@ -352,7 +365,6 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
         print("minx: \(minX), maxx:\(maxX), miny:\(minY),maxy:\(maxY)")
         // clear all annotationLocation list
         self.annotationLocationsDb.removeAll()
-        print("after clear: \(self.annotationLocationsDb)")
         let ref = Database.database().reference(fromURL: "https://mapattraction.firebaseio.com/")
         ref.child("locations").observeSingleEvent(of: .value, with: { (snapshot) in
             for child in snapshot.children{
