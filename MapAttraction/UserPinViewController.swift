@@ -81,10 +81,16 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
                 passedFilterTags = senderVC.filterTags
                 passedFilterDistance = senderVC.filterDistance
                 passedFilterRating = senderVC.filterRating
-                var minLong : Double = lastLong - 0.0000089982311916*Double(passedFilterDistance)
-                var maxLong : Double = lastLong + 0.0000089982311916*Double(passedFilterDistance)
+                
+                //lon1 + atan2(sin(θ)*sin(d/R)*cos(lat1), cos(d/R)−sin(lat1)*sin(lat2))
+                var minLong : Double = lastLong - 0.000089982311916*Double(passedFilterDistance)*cos(lastLat * Double.pi/180)
+                print(minLong)
+                var maxLong : Double = lastLong + 0.000089982311916*Double(passedFilterDistance)*cos(lastLat * Double.pi/180)
+                print(maxLong)
                 var minLat : Double = lastLat - 0.000089982311916*Double(passedFilterDistance)
+                print(minLat)
                 var maxLat : Double = lastLat + 0.000089982311916*Double(passedFilterDistance)
+                print(maxLat)
                 print("\(passedFilterTags) \(passedFilterDistance) \(passedFilterRating)")
                 // call api with filter
                 // pin the result from the api
