@@ -101,23 +101,21 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
                     maxla = region.center.latitude + (region.span.latitudeDelta / 2.0);
                     minlong = region.center.longitude - (region.span.longitudeDelta / 2.0);
                     maxlong = region.center.longitude + (region.span.longitudeDelta / 2.0);
-                    //print("\(minlong) \(maxlong) \(minla) \(maxla)")
-
-                    
+                   
                     // get data with boarding boundary from api and parse the result into annotationLocations
                     let defaulturl = "https://opentripmap-places-v1.p.rapidapi.com/en/places/bbox?lon_min="+String(minlong)+"&lon_max="+String(maxlong)+"&lat_min="+String(minla)+"&lat_max="+String(maxla)
-                    
-                    //print(defaulturl)
+                    print(defaulturl)
                     getFromAPI(urlrequest: defaulturl)
+                    getLocationFromDBWithInRange(minX: minla, maxX: maxla, minY: minlong, maxY: maxlong, ratingMin: -1, tags: [])
                     return
                 }
                 if(passedFilterTags.count != 0){
-                    requesturl += "src_attr="
+                    requesturl += "kinds="
                     for tag in passedFilterTags{
                         i += 1
                         requesturl = requesturl + tag
                         if(i < passedFilterTags.count){
-                            requesturl = requesturl + "%252C%20"
+                            requesturl = requesturl + ","
                         }
                     }
                 }
@@ -131,6 +129,7 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
                 }
                 else{
                     //give a default box as min lat, max lat, max long and min long
+                    requesturl += "&lon_min="+String(minlong)+"&lon_max="+String(maxlong)+"&lat_min="+String(minla)+"&lat_max="+String(maxla)
                 }
                 getFromAPI(urlrequest: requesturl)
                 getLocationFromDBWithInRange(minX: minla, maxX: maxla, minY: minlong, maxY: maxlong, ratingMin: passedFilterRating, tags:passedFilterTags)
@@ -164,9 +163,6 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
         
         searchBar.showsScopeBar = true
         searchBar.delegate = self
-
-        saveToDB(name: "Jamba juice6", tag: ["Restaurant", "water bar"], x: 111, y: 222, description: "Juicy juice", rating: 3)
-        saveToDB(name: "Jamba juice7", tag: ["Restaurant", "water bar"], x: 111, y: 222, description: "Juicy juice", rating: 3)
     }
     
     
