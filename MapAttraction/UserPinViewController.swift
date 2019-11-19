@@ -62,6 +62,9 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
                 // pin the result from the api
                 var requesturl = "https://opentripmap-places-v1.p.rapidapi.com/en/places/bbox?"
                 var i = 0
+                if(passedFilterRating == 0 && passedFilterDistance == 0 && passedFilterTags.count == 0){
+                        return
+                }
                 if(passedFilterTags.count != 0){
                     requesturl += "src_attr="
                     for tag in passedFilterTags{
