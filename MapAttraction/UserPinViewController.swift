@@ -91,7 +91,25 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
                 var requesturl = "https://opentripmap-places-v1.p.rapidapi.com/en/places/bbox?"
                 var i = 0
                 if(passedFilterRating == 0 && passedFilterDistance == 0 && passedFilterTags.count == 0){
-                        return
+                    let currCoords = CLLocationCoordinate2D(latitude: lastLat, longitude: lastLong)
+                    let span = MKCoordinateSpan(latitudeDelta: 0.03, longitudeDelta: 0.03)
+                    let region = MKCoordinateRegion(center: currCoords, span: span)
+                    //myMap.setRegion(region, animated: true)
+                    
+                    minla = region.center.latitude - (region.span.latitudeDelta / 2.0);
+                    
+                    maxla = region.center.latitude + (region.span.latitudeDelta / 2.0);
+                    minlong = region.center.longitude - (region.span.longitudeDelta / 2.0);
+                    maxlong = region.center.longitude + (region.span.longitudeDelta / 2.0);
+                    //print("\(minlong) \(maxlong) \(minla) \(maxla)")
+
+                    
+                    // get data with boarding boundary from api and parse the result into annotationLocations
+                    let defaulturl = "https://opentripmap-places-v1.p.rapidapi.com/en/places/bbox?lon_min="+String(minlong)+"&lon_max="+String(maxlong)+"&lat_min="+String(minla)+"&lat_max="+String(maxla)
+                    
+                    //print(defaulturl)
+                    getFromAPI(urlrequest: defaulturl)
+                    return
                 }
                 if(passedFilterTags.count != 0){
                     requesturl += "src_attr="
