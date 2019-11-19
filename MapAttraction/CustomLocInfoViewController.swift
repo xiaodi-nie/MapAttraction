@@ -15,6 +15,7 @@ class CustomLocInfoViewController: UIViewController, UITableViewDataSource, UITa
     var longitude: Double = 0.0
     var selectedTags:[String] = []
     var selectedRating:Int = 0
+    var dbIndex:Int = 0
     
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var descriptionTextField: UITextField!
@@ -152,8 +153,13 @@ class CustomLocInfoViewController: UIViewController, UITableViewDataSource, UITa
         print("description: \(String(describing: descriptionTextField.text))")
         print("rating:  \(selectedRating)")
         
+//        let ref = Database.database().reference(fromURL: "https://mapattraction.firebaseio.com/")
+//        ref.child("locations").child(nameTextField.text!).updateChildValues(["tag": selectedTags, "x": latitude,"y": longitude, "description": descriptionTextField.text!])
+        
         let ref = Database.database().reference(fromURL: "https://mapattraction.firebaseio.com/")
-        ref.child("locations").child(nameTextField.text!).updateChildValues(["tag": selectedTags, "x": latitude,"y": longitude, "description": descriptionTextField.text!])
+        let id = String(Int(NSDate.timeIntervalSinceReferenceDate*1000))
+        
+        ref.child("locations").child(nameTextField.text!).updateChildValues(["xid": id,"tag": selectedTags, "x": latitude,"y": longitude, "description": descriptionTextField.text!,"rating": selectedRating])
         return true
     }
     

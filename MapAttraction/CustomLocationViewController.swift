@@ -94,10 +94,10 @@ class CustomLocationViewController: UIViewController, CLLocationManagerDelegate,
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, didChange newState: MKAnnotationView.DragState, fromOldState oldState: MKAnnotationView.DragState) {
         if newState == MKAnnotationView.DragState.ending {
             if let droppedAt = view.annotation{
-                let newx = droppedAt.coordinate.latitude
-                let newy = droppedAt.coordinate.longitude
-                print("\(newx), \(newy)")
-                self.customPin.title = String(format: "(%.8f, %.8f)", newx,newy)
+                lastLat = droppedAt.coordinate.latitude
+                lastLong = droppedAt.coordinate.longitude
+                print("\(lastLat), \(lastLong)")
+                self.customPin.title = String(format: "(%.8f, %.8f)", lastLat,lastLong)
             }
             
         }

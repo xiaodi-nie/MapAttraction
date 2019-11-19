@@ -14,7 +14,7 @@ import Firebase
 class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDelegate, CLLocationManagerDelegate {
     
     var coordinates:[(Double,Double)] = []
-    var dbIndex:Int = 0;
+    
     //variables passed from the filterViewController
     var passedFilterTags:[String] = []
     var passedFilterDistance:Int = 0
@@ -95,9 +95,7 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
     
     //save value into db
     func saveToDB (name: String, tag: [String], x: Double, y: Double, description: String, rating: Int){
-        let ref = Database.database().reference(fromURL: "https://mapattraction.firebaseio.com/")
-        self.dbIndex += 1
-        ref.child("locations").child(name).updateChildValues(["xid": dbIndex,"tag": tag, "x": x,"y": y, "description": description,"rating": rating])
+        
     }
 
     override func viewDidLoad() {
