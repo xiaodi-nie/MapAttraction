@@ -18,16 +18,22 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
     //variables passed from the filterViewController
     var passedFilterTags:[String] = []
     var passedFilterDistance:Int = 0
-    var passedFilterRating:Int = 1
+    var passedFilterRating:Int = 0
     
-    let annotationLocations = [
-        ["title": "location 1", "latitude": 37.33627815, "longitude": -122.03096498, "xid":"xid111"],
-        ["title": "location 2", "latitude": 37.33198570, "longitude": -122.02952778, "xid":"xid222"]
+    var annotationLocations = [
+        ["title": "location 1", "latitude": 37.33627815, "longitude": -122.03096498, "xid":"xid111", "fromApi": false],
+        ["title": "location 2", "latitude": 37.33198570, "longitude": -122.02952778, "xid":"xid222", "fromApi": false]
     ]
     
     //variables used to record current coordinates
     var lastLat:Double = 0
     var lastLong:Double = 0
+    var maxla:Double = 0
+    var minla:Double = 0
+    var maxlong:Double = 0
+    var minlong:Double = 0
+    
+    typealias FinishedDownload = () -> ()
     
     @IBOutlet weak var myMap: MKMapView!
     let locationManager = CLLocationManager()
@@ -47,11 +53,42 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
                 passedFilterDistance = senderVC.filterDistance
                 passedFilterRating = senderVC.filterRating
                 print("\(passedFilterTags) \(passedFilterDistance) \(passedFilterRating)")
+                // call api with filter
+                // pin the result from the api
+                var requesturl = "https://opentripmap-places-v1.p.rapidapi.com/en/places/bbox?"
+                var i = 0
+                if(passedFilterTags.count != 0){
+                    requesturl += "src_attr="
+                    for tag in passedFilterTags{
+                        i += 1
+                        requesturl = requesturl + tag
+                        if(i < passedFilterTags.count){
+                            requesturl = requesturl + "%252C%20"
+                        }
+                    }
+                }
+
+                if(passedFilterRating != 0){
+                    requesturl += "&rate="+String(passedFilterRating)
+                }
+                
+                if(passedFilterDistance != 0){
+                    var minLong : Double = lastLong - 0.0000089982311916*Double(passedFilterDistance)
+                    var maxLong : Double = lastLong + 0.0000089982311916*Double(passedFilterDistance)
+                    var minLat : Double = lastLat - 0.000089982311916*Double(passedFilterDistance)
+                    var maxLat : Double = lastLat + 0.000089982311916*Double(passedFilterDistance)
+                    requesturl += "&lon_min="+String(minLong)+"&lon_max="+String(maxLong)+"&lat_min="+String(minLat)+"&lat_max="+String(maxLat)
+                }
+                else{
+                    //give a default box as min lat, max lat, max long and min long
+                }
+                getFromAPI(urlrequest: requesturl)
+                //pinLocations(locations: self.annotationLocations)
             }
         }
     }
     
-    //update db
+    //save value into db
     func saveToDB (name: String, tag: [String], x: Double, y: Double, description: String, rating: Int){
         let ref = Database.database().reference(fromURL: "https://mapattraction.firebaseio.com/")
         self.dbIndex += 1
@@ -70,8 +107,6 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
             locationManager.requestLocation()
         }
         
-        pinLocations(locations: annotationLocations)
-        
         //the following code snippet is used to enable touching anywhere on the screen to dismiss keyboard
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing))
         tap.cancelsTouchesInView = false
@@ -81,63 +116,16 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
         searchBar.showsScopeBar = true
         searchBar.delegate = self
        // getLocationFromDBWithInRange(minX: 100.0, maxX: 200.0, minY: 200.0, maxY: 300.0)
-        getDetails(xid: "W274295725")
         saveToDB(name: "Jamba juice6", tag: ["Restaurant", "water bar"], x: 111, y: 222, description: "Juicy juice", rating: 3)
         saveToDB(name: "Jamba juice7", tag: ["Restaurant", "water bar"], x: 111, y: 222, description: "Juicy juice", rating: 3)
     }
     
-    func getAllPins(minLong: Double,maxLong: Double,minLat: Double,maxLat: Double){
-        
-        let ref = Database.database().reference(fromURL: "https://mapattraction.firebaseio.com/")
-        ref.child("locations").child("").observeSingleEvent(of: .value, with: { (snapshot) in
-                for child in snapshot.children{
-                    let snap = child as! DataSnapshot
-                    let key = snap.key
-                    let value = snap.value!
-                    if (key == "tag"){
-                        print(value);
-                    }
-                }
-            })
-            { (error) in
-                print(error.localizedDescription)
-            }
-    }
+    
+    
+
 
     
     
-    func getDetails (xid : String){
-        let headers = [
-            "x-rapidapi-host": "opentripmap-places-v1.p.rapidapi.com",
-            "x-rapidapi-key": "8af0d82f43msh34e53305797a0cbp197d01jsnac77d9f76adc"
-        ]
-
-        let request = NSMutableURLRequest(url: NSURL(string: "https://opentripmap-places-v1.p.rapidapi.com/en/places/xid/" + xid)! as URL,
-                                                cachePolicy: .useProtocolCachePolicy,
-                                            timeoutInterval: 10.0)
-        request.httpMethod = "GET"
-        request.allHTTPHeaderFields = headers
-
-        let session = URLSession.shared
-        let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
-            if (error != nil) {
-                print(error)
-            } else {
-                do {
-                  let json: NSDictionary = try JSONSerialization.jsonObject(with: data!, options: []) as! NSDictionary
-                  print(json)
-                    let feature = json["bbox"]
-                   print(json["name"])
-                   print(json["kinds"])
-               } catch {
-                   print("JSON error: \(error.localizedDescription)")
-               }
-
-            }
-        })
-
-        dataTask.resume()
-    }
     
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -148,29 +136,6 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
     
     
     
-    //called after the search button on keyboard is pressed
-    func getLocationFromDBWithInRange(minX: Double, maxX: Double, minY: Double, maxY: Double ) {
-         let ref = Database.database().reference(fromURL: "https://mapattraction.firebaseio.com/")
-    ref.child("locations").observeSingleEvent(of: .value, with: { (snapshot) in
-            for child in snapshot.children{
-                let snap = child as! DataSnapshot
-                let key = snap.key
-                let value = snap.value!
-                let info = value as! NSDictionary
-//                print(key)
-//                print(info)
-                let id :Int = Int(info["dbIndex"] as! Int)
-                let x :Double = Double(info["x"] as! Double)
-                let y :Double = Double(info["y"] as! Double)
-                if (x <= maxX && x >= minX && y >= minY && y <= maxY ){
-                //    print(id,x,y)
-                }
-            }
-        })
-        { (error) in
-            print(error.localizedDescription)
-        }
-    }
     
     
     //called after the search button on keyboard is pressed
@@ -214,18 +179,36 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
     
     //called after user location is acquired/updated
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations:[CLLocation]){
+        print("in location manager")
         if let userLocation = locations.last{
             self.lastLat = userLocation.coordinate.latitude
             self.lastLong = userLocation.coordinate.longitude
         
             let currCoords = CLLocationCoordinate2D(latitude: lastLat, longitude: lastLong)
-            let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+            let span = MKCoordinateSpan(latitudeDelta: 0.03, longitudeDelta: 0.03)
             let region = MKCoordinateRegion(center: currCoords, span: span)
             myMap.setRegion(region, animated: true)
+            
+            minla = region.center.latitude - (region.span.latitudeDelta / 2.0);
+            
+            maxla = region.center.latitude + (region.span.latitudeDelta / 2.0);
+            minlong = region.center.longitude - (region.span.longitudeDelta / 2.0);
+            maxlong = region.center.longitude + (region.span.longitudeDelta / 2.0);
+            //print("\(minlong) \(maxlong) \(minla) \(maxla)")
+
+            // get data with boarding boundary from api and parse the result into annotationLocations
+            let defaulturl = "https://opentripmap-places-v1.p.rapidapi.com/en/places/bbox?lon_min="+String(minlong)+"&lon_max="+String(maxlong)+"&lat_min="+String(minla)+"&lat_max="+String(maxla)
+            
+            //print(defaulturl)
+            getFromAPI(urlrequest: defaulturl)
+            //pinLocations(locations: annotationLocations)
+            getLocationFromDBWithInRange(minX: minlong, maxX: maxlong, minY: minla, maxY: maxla)
         
         }
         
     }
+    
+    
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         // might be that user didn't enable location service on the device
@@ -244,9 +227,105 @@ class UserPinViewController: UIViewController,UISearchBarDelegate, MKMapViewDele
         {
             let destVC = segue.destination as! PinDetailViewController
             destVC.xid = ((sender as! MKAnnotationView).annotation as! PinAnnotation).xid
-
         }
     }
+    
+    // operate with api
+    
+    func getFromAPI (urlrequest:String){
+        // clear the annotationlocation list
+        print("url: \(urlrequest)")
+        self.annotationLocations.removeAll()
+        myMap.removeAnnotations(myMap.annotations)
+
+ 
+        let headers = [
+            "x-rapidapi-host": "opentripmap-places-v1.p.rapidapi.com",
+            "x-rapidapi-key": "8af0d82f43msh34e53305797a0cbp197d01jsnac77d9f76adc"
+            //"x-rapidapi-key": "SIGN-UP-FOR-KEY"
+        ]
+        
+//        let request = NSMutableURLRequest(url: NSURL(string: "https://opentripmap-places-v1.p.rapidapi.com/en/places/bbox?lon_min=100&lon_max=100&lat_min=100&lat_max=100")! as URL,
+//                                          cachePolicy: .useProtocolCachePolicy,
+//                                          timeoutInterval: 10.0)
+        let request = NSMutableURLRequest(url: NSURL(string: urlrequest)! as URL,
+                                          cachePolicy: .useProtocolCachePolicy,
+                                          timeoutInterval: 10.0)
+
+        request.httpMethod = "GET"
+        request.allHTTPHeaderFields = headers
+        
+        let session = URLSession.shared
+        let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
+            if (error != nil) {
+                print(error)
+            } else {
+                do {
+                    let json: NSDictionary = try JSONSerialization.jsonObject(with: data!, options: []) as! NSDictionary
+                    if (json != nil && json["features"] != nil) {
+                    let feature: NSArray = json["features"] as! NSArray
+                    //print("feature:\(feature)")
+                    for item in feature{
+                        
+                        let detail = item as! NSDictionary
+                        let geometry = detail["geometry"] as! NSDictionary
+                        let coordinates = geometry["coordinates"] as! NSArray
+                        let long: Double = coordinates[0] as! Double
+                        let lat: Double = coordinates[1] as! Double
+                        let properties = detail["properties"] as! NSDictionary
+                        let name: String = properties["name"]! as! String
+                        let rate: Double = properties["rate"]! as! Double
+                        let xid: String = properties["xid"]! as! String
+//                        print(name+"->", xid+"->", String(rate)+"->",String(long)+"->",String(lat))
+//                        print(name)
+//                        print(lat)
+//                        print(long)
+                        self.annotationLocations.append(["title": name, "latitude": lat, "longitude": long, "xid":xid, "fromApi": true])
+                        
+                    }
+                    print("in getfromapi \(self.annotationLocations)")
+                    self.pinLocations(locations: self.annotationLocations)
+                    }
+                    else{
+                        print("API result is empty")
+                        print(json)
+                    }
+                    } catch {
+                    print("JSON error: \(error.localizedDescription)")
+                }
+            }
+        })
+        
+        dataTask.resume()
+        //print(self.annotationLocations)
+        
+       
+    }
+    
+    func getLocationFromDBWithInRange(minX: Double, maxX: Double, minY: Double, maxY: Double ) {
+        // clear all annotationLocation list
+        self.annotationLocations.removeAll()
+        let ref = Database.database().reference(fromURL: "https://mapattraction.firebaseio.com/")
+        ref.child("locations").observeSingleEvent(of: .value, with: { (snapshot) in
+            for child in snapshot.children{
+                let snap = child as! DataSnapshot
+                let key = snap.key
+                let value = snap.value!
+                let info = value as! NSDictionary
+                let id  = info["xid"]
+                let x :Double = Double(info["x"] as! Double)
+                let y :Double = Double(info["y"] as! Double)
+                if (x <= maxX && x >= minX && y >= minY && y <= maxY ){
+                    self.annotationLocations.append(["title": key, "latitude": y, "longitude": x, "xid":id, "fromApi": false])
+                }
+            }
+            self.pinLocations(locations: self.annotationLocations)
+        })
+        { (error) in
+            print(error.localizedDescription)
+        }
+    }
+    
     
 
 }

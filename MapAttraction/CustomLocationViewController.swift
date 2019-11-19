@@ -56,7 +56,7 @@ class CustomLocationViewController: UIViewController, CLLocationManagerDelegate,
             //print("longitude = \(lastLong)")
             
             let currCoords = CLLocationCoordinate2D(latitude: lastLat, longitude: lastLong)
-            let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+            let span = MKCoordinateSpan(latitudeDelta: 0.03, longitudeDelta: 0.03)
             let region = MKCoordinateRegion(center: currCoords, span: span)
             customMap.setRegion(region, animated: true)
 

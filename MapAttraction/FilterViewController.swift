@@ -23,7 +23,7 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
     //variables used to record user selected tags, distance and rating
     var filterTags:[String] = []
     var filterDistance: Int = 0
-    var filterRating: Int = 1
+    var filterRating: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
